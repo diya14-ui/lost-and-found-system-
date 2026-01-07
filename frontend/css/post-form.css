@@ -1,0 +1,497 @@
+/* Post/Report Page Styles - Clean & Modern Design */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Post Page Background */
+.post-page {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5a4fcf 100%);
+    min-height: 100vh;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Page Hero Section */
+.post-page .page-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4834d4 100%);
+    color: white;
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-page .page-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.post-page .page-hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.post-page .page-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #ffffff, #f0f9ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.post-page .page-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+/* Form Section */
+.form-section {
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(102, 126, 234, 0.1);
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Styling */
+.report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* Labels */
+.form-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Input Fields */
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 1.25rem 1.75rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+    box-sizing: border-box;
+}
+
+/* Custom Dropdown Styling */
+.form-select {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1rem center !important;
+    background-size: 12px !important;
+    padding-right: 2.75rem !important;
+    cursor: pointer;
+}
+
+/* Remove any default styling that might interfere */
+.form-select::-ms-expand {
+    display: none;
+}
+
+/* Ensure consistent dropdown behavior across all states */
+.form-select:active,
+.form-select:focus-visible,
+.form-select:target {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23667eea' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") !important;
+    background-position: right 1rem center !important;
+    background-size: 12px !important;
+    background-repeat: no-repeat !important;
+}
+
+/* Dropdown with icons - adjust padding */
+.form-group.has-icon .form-select {
+    padding-left: 3.5rem;
+    padding-right: 2.75rem;
+}
+
+/* Input with Icons */
+.form-group.has-icon {
+    position: relative;
+}
+
+.form-group.has-icon .form-input,
+.form-group.has-icon .form-select {
+    padding-left: 3.5rem;
+}
+
+.form-group.has-icon .field-icon {
+    position: absolute;
+    left: 1.25rem;
+    bottom: 1.25rem;
+    color: #9ca3af;
+    font-size: 1.25rem;
+    pointer-events: none;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Make sure icons align properly in all form groups */
+.form-group.has-icon .form-input {
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure icons are visible and change color on focus */
+.form-group.has-icon .form-input:focus ~ .field-icon,
+.form-group.has-icon .form-select:focus ~ .field-icon {
+    color: #667eea;
+}
+
+/* Focus States */
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    background: #f8faff;
+    transform: translateY(-1px);
+}
+
+/* Dropdown focus state - keep same arrow, just change color */
+.form-select:focus {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23667eea' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") !important;
+    background-position: right 1rem center !important;
+    background-size: 12px !important;
+}
+
+/* Placeholder Styling */
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: #9ca3af;
+    opacity: 1;
+}
+
+.form-input:focus::placeholder,
+.form-textarea:focus::placeholder {
+    color: #d1d5db;
+    opacity: 0.7;
+}
+
+/* Textarea */
+.form-textarea {
+    resize: vertical;
+    min-height: 140px;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+}
+
+/* File Upload Styling */
+.file-upload-container {
+    position: relative;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border: 3px dashed #c7d2fe;
+    border-radius: 16px;
+    background: #f8faff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #667eea;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    justify-content: center;
+}
+
+.file-upload-label:hover {
+    border-color: #667eea;
+    background: #eef2ff;
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 2rem;
+}
+
+.file-info {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Submit Button */
+.submit-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    padding: 1.5rem 3rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.35);
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #5a67d8, #667eea);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 45px rgba(102, 126, 234, 0.45);
+}
+
+.submit-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-icon {
+    font-size: 1.3rem;
+}
+
+/* Loading State */
+.submit-btn.loading {
+    pointer-events: none;
+    opacity: 0.8;
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+}
+
+/* Form Note */
+.form-note {
+    background: linear-gradient(145deg, #f0f4ff, #e0e7ff);
+    border: 2px solid #c7d2fe;
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-top: 2rem;
+}
+
+.form-note p {
+    margin: 0;
+    color: #4338ca;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Validation States */
+.form-input.error,
+.form-select.error,
+.form-textarea.error {
+    border-color: #ef4444;
+    background: #fef2f2;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.form-input.success,
+.form-select.success,
+.form-textarea.success {
+    border-color: #10b981;
+    background: #f0fdf4;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* Success State for Form Container */
+.form-container.success {
+    border-color: #10b981;
+    background: linear-gradient(145deg, #ffffff 0%, #f0fdf4 100%);
+    box-shadow: 0 25px 80px rgba(16, 185, 129, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .post-page .page-title {
+        font-size: 2.5rem;
+    }
+    
+    .post-page .page-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .form-container {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+        border-radius: 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .form-section {
+        padding: 2rem 1rem;
+    }
+    
+    .report-form {
+        gap: 1.5rem;
+    }
+    
+    .form-group {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .post-page .page-title {
+        font-size: 2rem;
+    }
+    
+    .post-page .page-hero {
+        padding: 4rem 1rem 3rem;
+    }
+    
+    .form-container {
+        padding: 1.5rem 1rem;
+        border-radius: 16px;
+    }
+    
+    .submit-btn {
+        padding: 1.25rem 2rem;
+        font-size: 1rem;
+    }
+    
+    .form-input,
+    .form-select,
+    .form-textarea {
+        padding: 1rem 1.25rem;
+        border-radius: 12px;
+    }
+    
+    .form-group.has-icon .form-input {
+        padding-left: 3rem;
+    }
+    
+    .form-group.has-icon .field-icon {
+        left: 1rem;
+        font-size: 1.1rem;
+    }
+    
+    .form-select {
+        background-position: right 0.75rem center !important;
+        background-size: 10px !important;
+        padding-right: 2.25rem !important;
+    }
+    
+    .form-group.has-icon .form-select {
+        padding-left: 2.75rem;
+        padding-right: 2.25rem;
+    }
+    
+    .form-select:hover,
+    .form-select:focus,
+    .form-select:active {
+        background-position: right 0.75rem center !important;
+        background-size: 10px !important;
+    }
+    
+    .file-upload-label {
+        padding: 1.25rem 1.5rem;
+        border-radius: 12px;
+    }
+}
+
+/* Additional Enhancements */
+.form-input:hover,
+.form-select:hover,
+.form-textarea:hover {
+    border-color: #d1d5db;
+}
+
+/* Dropdown hover state - subtle color change */
+.form-select:hover {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23667eea' viewBox='0 0 16 16'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") !important;
+    background-position: right 1rem center !important;
+    background-size: 12px !important;
+}
+
+.form-select option {
+    padding: 0.75rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+    box-sizing: border-box;
+}
+
+.post-page * {
+    transition: all 0.3s ease;
+}

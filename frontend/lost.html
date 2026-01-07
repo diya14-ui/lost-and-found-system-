@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Items - Campus Lost and Found</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <!-- Left side - Logo -->
+        <div class="navbar-left">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🔍</div>
+                <span class="logo-text">Campus Lost and Found</span>
+            </a>
+        </div>
+
+        <!-- Center - Navigation Links -->
+        <div class="navbar-center">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lost.html">Lost Items</a></li>
+                <li><a href="found.html">Found Items</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        </div>
+
+        <!-- Right side - Action Buttons -->
+        <div class="navbar-right">
+            <a href="post.html?type=lost" class="btn-report">Report Lost</a>
+            <a href="post.html?type=found" class="btn-report">Report Found</a>
+            <a href="login.html" class="btn-auth">Login/Register</a>
+        </div>
+    </nav>
+
+    <!-- Main content for Lost Items page -->
+    <main class="lost-items-page">
+        <!-- Page Header / Hero Section -->
+        <section class="page-hero">
+            <div class="page-hero-container">
+                <h1 class="page-title">Lost Items</h1>
+                <p class="page-subtitle">Browse through the list of lost items reported by students.</p>
+            </div>
+        </section>
+
+        <!-- Search and Filter Bar -->
+        <section class="search-filter-section">
+            <div class="search-filter-container">
+                <div class="search-bar-wrapper">
+                    <div class="search-input-container">
+                        <input type="text" placeholder="Search lost items by name, description..." class="search-input-field">
+                        <button class="search-btn">
+                            <span class="search-icon">🔍</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="filter-controls">
+                    <select class="filter-dropdown" id="location-filter">
+                        <option value="">All Locations</option>
+                        <option value="library">Library</option>
+                        <option value="student-center">Student Center</option>
+                        <option value="engineering">Engineering Building</option>
+                        <option value="cafeteria">Cafeteria</option>
+                        <option value="gym">Gym</option>
+                        <option value="parking">Parking Lots</option>
+                    </select>
+                    
+                    <select class="filter-dropdown" id="category-filter">
+                        <option value="">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="documents">Documents</option>
+                        <option value="bags">Bags</option>
+                        <option value="keys">Keys</option>
+                        <option value="other">Other</option>
+                    </select>
+                    
+                    <select class="filter-dropdown" id="date-filter">
+                        <option value="">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="older">Older</option>
+                    </select>
+                    
+                    <button class="clear-filters-btn">Clear Filters</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lost Item Cards Section -->
+        <section class="lost-items-grid">
+            <div class="items-container">
+                <div class="items-header">
+                    <h2 class="section-heading">Recently Lost Items</h2>
+                    <p class="items-count">Showing 12 of 47 lost items</p>
+                </div>
+                
+                <div class="items-grid">
+                    <!-- Sample Lost Item Cards -->
+                    <div class="lost-item-card">
+                        <div class="item-image-container">
+                            <div class="item-placeholder-image">📱</div>
+                            <span class="item-urgency high">Urgent</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">iPhone 14 Pro Max</h3>
+                            <p class="item-location">📍 Library - 3rd Floor Study Area</p>
+                            <p class="item-date">🕐 Lost 2 hours ago</p>
+                            <p class="item-description">Black iPhone with cracked screen protector, blue case</p>
+                            <button class="view-details-btn">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="lost-item-card">
+                        <div class="item-image-container">
+                            <div class="item-placeholder-image">💼</div>
+                            <span class="item-urgency medium">Important</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">Brown Leather Wallet</h3>
+                            <p class="item-location">📍 Student Center - Food Court</p>
+                            <p class="item-date">🕐 Lost 5 hours ago</p>
+                            <p class="item-description">Contains student ID, credit cards, and cash</p>
+                            <button class="view-details-btn">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="lost-item-card">
+                        <div class="item-image-container">
+                            <div class="item-placeholder-image">🎒</div>
+                            <span class="item-urgency low">Normal</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">Blue Backpack</h3>
+                            <p class="item-location">📍 Engineering Building - Lab 205</p>
+                            <p class="item-date">🕐 Lost 1 day ago</p>
+                            <p class="item-description">Nike backpack with laptop and textbooks inside</p>
+                            <button class="view-details-btn">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="lost-item-card">
+                        <div class="item-image-container">
+                            <div class="item-placeholder-image">🔑</div>
+                            <span class="item-urgency high">Urgent</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">Car Keys with Remote</h3>
+                            <p class="item-location">📍 Parking Lot C - Near Entrance</p>
+                            <p class="item-date">🕐 Lost 3 hours ago</p>
+                            <p class="item-description">Toyota keys with blue keychain and house keys</p>
+                            <button class="view-details-btn">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="lost-item-card">
+                        <div class="item-image-container">
+                            <div class="item-placeholder-image">💳</div>
+                            <span class="item-urgency medium">Important</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">Student ID Card</h3>
+                            <p class="item-location">📍 Gym - Locker Room</p>
+                            <p class="item-date">🕐 Lost 6 hours ago</p>
+                            <p class="item-description">ID card for Sarah Johnson, Computer Science</p>
+                            <button class="view-details-btn">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="lost-item-card">
+                        <div class="item-image-container">
+                            <div class="item-placeholder-image">🕶️</div>
+                            <span class="item-urgency low">Normal</span>
+                        </div>
+                        <div class="item-details">
+                            <h3 class="item-name">Ray-Ban Sunglasses</h3>
+                            <p class="item-location">📍 Cafeteria - Outdoor Seating</p>
+                            <p class="item-date">🕐 Lost 2 days ago</p>
+                            <p class="item-description">Black frame Ray-Ban Aviators with case</p>
+                            <button class="view-details-btn">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-section">
+                    <button class="load-more-btn">Load More Items</button>
+                    <p class="load-info">Showing 6 of 47 items</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="footer-logo-icon">🔍</span>
+                        <span class="footer-logo-text">Campus Lost & Found</span>
+                    </div>
+                    <p class="footer-description">
+                        Helping students reunite with their lost belongings on campus.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="lost.html">Lost Items</a></li>
+                        <li><a href="found.html">Found Items</a></li>
+                        <li><a href="post.html">Report Item</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="mailto:admin@campus.edu">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Contact Info</h4>
+                    <div class="footer-contact">
+                        <p>📧 admin@campus.edu</p>
+                        <p>📞 (555) 123-4567</p>
+                        <p>📍 Campus Security Office</p>
+                        <p>🕒 Mon-Fri, 8AM-6PM</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Campus Lost & Found System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>

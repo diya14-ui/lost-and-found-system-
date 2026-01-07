@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Lost and Found</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <!-- Left side - Logo -->
+        <div class="navbar-left">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🔍</div>
+                <span class="logo-text">Campus Lost and Found</span>
+            </a>
+        </div>
+
+        <!-- Center - Navigation Links -->
+        <div class="navbar-center">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="lost.html">Lost Items</a></li>
+                <li><a href="found.html">Found Items</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        </div>
+
+        <!-- Right side - Action Buttons -->
+        <div class="navbar-right">
+            <a href="post.html?type=lost" class="btn-report">Report Lost</a>
+            <a href="post.html?type=found" class="btn-report">Report Found</a>
+            <a href="login.html" class="btn-auth">Login/Register</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">Lost something? Found something?</h1>
+            <p class="hero-description">Easily report and find lost items in your campus.</p>
+            <div class="hero-buttons">
+                <a href="post.html?type=lost" class="hero-btn hero-btn-lost">
+                    <span class="btn-icon">📋</span>
+                    Report Lost
+                </a>
+                <a href="post.html?type=found" class="hero-btn hero-btn-found">
+                    <span class="btn-icon">✅</span>
+                    Report Found
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="how-it-works-container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="icon">📝</span>
+                        <div class="step-number">1</div>
+                    </div>
+                    <h3 class="step-title">Report a Lost/Found Item</h3>
+                    <p class="step-description">Quickly submit details about your lost or found item with photos and descriptions.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="icon">🔍</span>
+                        <div class="step-number">2</div>
+                    </div>
+                    <h3 class="step-title">Browse Items</h3>
+                    <p class="step-description">Search through our database of lost and found items to find what you're looking for.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="icon">✨</span>
+                        <div class="step-number">3</div>
+                    </div>
+                    <h3 class="step-title">Match with Your Item</h3>
+                    <p class="step-description">Found a match? Contact the person who reported the item directly through our platform.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-icon">
+                        <span class="icon">🤝</span>
+                        <div class="step-number">4</div>
+                    </div>
+                    <h3 class="step-title">Verify & Claim</h3>
+                    <p class="step-description">Meet safely on campus to verify ownership and reclaim your lost item.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recently Reported Items Section -->
+    <section class="recent-items">
+        <div class="recent-items-container">
+            <h2 class="section-title">Recently Reported Items</h2>
+            <div class="items-grid">
+                <div class="item-card">
+                    <div class="item-image">
+                        <div class="placeholder-image">📱</div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-name">iPhone 14 Pro</h3>
+                        <p class="item-location">📍 Library - 2nd Floor</p>
+                        <p class="item-date">🕐 2 hours ago</p>
+                        <span class="item-type lost">Lost</span>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-image">
+                        <div class="placeholder-image">💼</div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-name">Leather Wallet</h3>
+                        <p class="item-location">📍 Student Center</p>
+                        <p class="item-date">🕐 5 hours ago</p>
+                        <span class="item-type found">Found</span>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-image">
+                        <div class="placeholder-image">🎒</div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-name">Blue Backpack</h3>
+                        <p class="item-location">📍 Engineering Building</p>
+                        <p class="item-date">🕐 1 day ago</p>
+                        <span class="item-type lost">Lost</span>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-image">
+                        <div class="placeholder-image">🔑</div>
+                    </div>
+                    <div class="item-info">
+                        <h3 class="item-name">Car Keys</h3>
+                        <p class="item-location">📍 Parking Lot C</p>
+                        <p class="item-date">🕐 3 days ago</p>
+                        <span class="item-type found">Found</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="view-all-buttons">
+                <a href="lost.html" class="view-all-btn">View All Lost Items</a>
+                <a href="found.html" class="view-all-btn secondary">View All Found Items</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Help / Contact Section -->
+    <section class="help-section">
+        <div class="help-container">
+            <h2 class="section-title">Need Help?</h2>
+            <p class="help-description">Check our FAQ or contact the admin for assistance.</p>
+            <div class="help-buttons">
+                <a href="#faq-questions" class="help-btn primary">
+                    <span class="btn-icon">❓</span>
+                    FAQ
+                </a>
+                <a href="mailto:admin@campus.edu" class="help-btn secondary">
+                    <span class="btn-icon">📧</span>
+                    Contact Us
+                </a>
+            </div>
+            <div class="contact-info">
+                <p class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    Campus Security: (555) 123-4567
+                </p>
+                <p class="contact-item">
+                    <span class="contact-icon">🕒</span>
+                    Available: Sun-Sat, 24hrs
+                </p>
+            </div>
+            
+            <!-- FAQ Questions Section -->
+            <div id="faq-questions" class="faq-container">
+                <h3 class="faq-title">Frequently Asked Questions</h3>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">❓</span>
+                            <h4>How do I post a lost item?</h4>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Click on "Report Lost" button, fill out the form with item details, upload a photo if available, and submit. Your item will be visible to others immediately.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">✋</span>
+                            <h4>How do I claim a found item?</h4>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Browse the found items section, identify your item, and contact the person who found it using the contact information provided. Arrange a safe meeting on campus to verify and claim your item.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">🛡️</span>
+                            <h4>What if someone falsely claims my item?</h4>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Always verify ownership through specific details only the real owner would know. Meet in public campus areas with security cameras. Contact campus security if you suspect fraudulent claims.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">⏰</span>
+                            <h4>How long do items stay on the system?</h4>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Lost and found items remain active for 30 days. After this period, items are automatically archived. You can contact campus security for items older than 30 days.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">📱</span>
+                            <h4>Can I edit my posted item details?</h4>
+                            <span class="toggle-icon">+</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Yes, you can edit your item details by logging into your account and accessing your posted items. You can update descriptions, add photos, or mark items as found/claimed.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="footer-logo-icon">🔍</span>
+                        <span class="footer-logo-text">Campus Lost & Found</span>
+                    </div>
+                    <p class="footer-description">
+                        Helping students reunite with their lost belongings on campus.
+                    </p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="lost.html">Lost Items</a></li>
+                        <li><a href="found.html">Found Items</a></li>
+                        <li><a href="post.html">Report Item</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="mailto:admin@campus.edu">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-title">Contact Info</h4>
+                    <div class="footer-contact">
+                        <p>📧 admin@campus.edu</p>
+                        <p>📞 (555) 123-4567</p>
+                        <p>📍 Campus Security Office</p>
+                        <p>🕒 Mon-Fri, 8AM-6PM</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Campus Lost & Found System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>

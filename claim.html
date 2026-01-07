@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Item - Campus Lost & Found</title>
+    <link rel="stylesheet" href="frontend/css/style.css">
+</head>
+<body>
+    <div class="claim-page">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="frontend/index.html" class="logo">
+                    <span class="logo-icon">🔍</span>
+                    <span class="logo-text">Campus Lost & Found</span>
+                </a>
+            </div>
+            <div class="navbar-center">
+                <ul class="nav-links">
+                    <li><a href="frontend/index.html">Home</a></li>
+                    <li><a href="frontend/lost.html">Lost Items</a></li>
+                    <li><a href="frontend/found.html">Found Items</a></li>
+                    <li><a href="frontend/profile.html">Profile</a></li>
+                </ul>
+            </div>
+            <div class="navbar-right">
+                <a href="frontend/login.html" class="btn-auth">Login</a>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <section class="claim-hero">
+            <div class="hero-container">
+                <div class="breadcrumb">
+                    <a href="item-detail.html">← Back to Item Details</a>
+                </div>
+                <h1 class="claim-title">Claim This Item</h1>
+                <p class="claim-subtitle">Please provide information to verify your ownership</p>
+            </div>
+        </section>
+
+        <!-- Claim Form Section -->
+        <section class="claim-form-section">
+            <div class="claim-container">
+                <!-- Item Summary Card -->
+                <div class="item-summary-card">
+                    <div class="item-preview">
+                        <div class="item-preview-image">📱</div>
+                        <div class="item-preview-info">
+                            <h3>iPhone 13 Pro Max</h3>
+                            <div class="item-meta">
+                                <span class="meta-item">
+                                    <span class="meta-icon">📍</span>
+                                    Main Library - 2nd Floor
+                                </span>
+                                <span class="meta-item">
+                                    <span class="meta-icon">📅</span>
+                                    Found on Nov 25, 2025
+                                </span>
+                            </div>
+                            <div class="finder-info">
+                                <span class="finder-avatar">JS</span>
+                                <span class="finder-name">Found by John Smith</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Claim Form -->
+                <div class="claim-form-card">
+                    <form class="claim-form" id="claimForm">
+                        <div class="form-header">
+                            <h2>Claim Request Form</h2>
+                            <p>Please provide detailed information to help us verify your ownership</p>
+                        </div>
+
+                        <!-- Ownership Explanation -->
+                        <div class="form-group">
+                            <label class="form-label required">
+                                <span class="label-icon">❓</span>
+                                Why do you think this item belongs to you?
+                            </label>
+                            <textarea 
+                                class="form-textarea" 
+                                id="ownershipReason" 
+                                placeholder="Please describe specific details that prove this item is yours (e.g., color, model, unique features, when/where you lost it, etc.)"
+                                required
+                                rows="5"
+                            ></textarea>
+                            <div class="field-help">
+                                Be specific about unique features, damage, case details, or circumstances when you lost it
+                            </div>
+                        </div>
+
+                        <!-- Proof Upload -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-icon">📎</span>
+                                Upload Proof (Optional)
+                            </label>
+                            <div class="file-upload-area" id="fileUploadArea">
+                                <input type="file" id="proofUpload" accept="image/*,.pdf" multiple hidden>
+                                <div class="upload-content">
+                                    <span class="upload-icon">📤</span>
+                                    <p class="upload-text">
+                                        <span class="upload-primary">Click to upload proof files</span>
+                                        <span class="upload-secondary">or drag and drop here</span>
+                                    </p>
+                                    <div class="upload-formats">
+                                        Supported: JPG, PNG, PDF (Max 5MB each)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="uploaded-files" id="uploadedFiles"></div>
+                            <div class="field-help">
+                                Upload photos of receipts, serial numbers, or similar items you own
+                            </div>
+                        </div>
+
+                        <!-- Contact Number -->
+                        <div class="form-group">
+                            <label class="form-label required">
+                                <span class="label-icon">📞</span>
+                                Contact Number
+                            </label>
+                            <input 
+                                type="tel" 
+                                class="form-input" 
+                                id="contactNumber"
+                                placeholder="Enter your phone number"
+                                required
+                            >
+                            <div class="field-help">
+                                We'll use this number to contact you about the claim status
+                            </div>
+                        </div>
+
+                        <!-- Additional Details -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-icon">ℹ️</span>
+                                Additional Information
+                            </label>
+                            <textarea 
+                                class="form-textarea" 
+                                id="additionalInfo" 
+                                placeholder="Any other information that might help verify your ownership..."
+                                rows="3"
+                            ></textarea>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">
+                                    I confirm that this item belongs to me and I understand that false claims may result in account suspension
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-actions">
+                            <button type="submit" class="submit-claim-btn">
+                                <span class="btn-icon">🤝</span>
+                                Submit Claim Request
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Process Information -->
+                <div class="process-info-card">
+                    <h3>What happens next?</h3>
+                    <div class="process-steps">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Review Process</h4>
+                                <p>The item owner will review your claim request</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Verification</h4>
+                                <p>You may be asked for additional verification</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Collection</h4>
+                                <p>If approved, we'll arrange item collection</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="process-note">
+                        <span class="note-icon">⏱️</span>
+                        Typical response time: 24-48 hours
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="frontend/js/app.js"></script>
+    <script>
+        // File upload functionality
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInput = document.getElementById('proofUpload');
+        const uploadedFilesContainer = document.getElementById('uploadedFiles');
+        let uploadedFiles = [];
+
+        // Click to upload
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('drag-over');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('drag-over');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            for (let file of files) {
+                if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                    alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                    continue;
+                }
+                
+                if (uploadedFiles.length < 5) { // Max 5 files
+                    uploadedFiles.push(file);
+                    displayUploadedFile(file);
+                } else {
+                    alert('Maximum 5 files allowed');
+                    break;
+                }
+            }
+        }
+
+        function displayUploadedFile(file) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'uploaded-file-item';
+            fileItem.innerHTML = `
+                <span class="file-icon">📄</span>
+                <span class="file-name">${file.name}</span>
+                <span class="file-size">(${(file.size / 1024).toFixed(1)} KB)</span>
+                <button type="button" class="remove-file-btn" onclick="removeFile('${file.name}')">×</button>
+            `;
+            uploadedFilesContainer.appendChild(fileItem);
+        }
+
+        function removeFile(fileName) {
+            uploadedFiles = uploadedFiles.filter(file => file.name !== fileName);
+            const fileItems = uploadedFilesContainer.querySelectorAll('.uploaded-file-item');
+            fileItems.forEach(item => {
+                if (item.querySelector('.file-name').textContent === fileName) {
+                    item.remove();
+                }
+            });
+        }
+
+        // Form submission
+        document.getElementById('claimForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('ownershipReason', document.getElementById('ownershipReason').value);
+            formData.append('contactNumber', document.getElementById('contactNumber').value);
+            formData.append('additionalInfo', document.getElementById('additionalInfo').value);
+            
+            uploadedFiles.forEach(file => {
+                formData.append('proofFiles', file);
+            });
+            
+            // Simulate form submission
+            const submitBtn = document.querySelector('.submit-claim-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="btn-icon">⏳</span>Submitting...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Claim request submitted successfully! You will receive updates via email and phone.');
+                // Redirect back to item details or profile
+                window.location.href = 'item-detail.html';
+            }, 2000);
+        });
+
+        // Character count for textarea
+        document.getElementById('ownershipReason').addEventListener('input', function() {
+            const maxLength = 500;
+            const currentLength = this.value.length;
+            
+            let counter = this.parentElement.querySelector('.char-counter');
+            if (!counter) {
+                counter = document.createElement('div');
+                counter.className = 'char-counter';
+                this.parentElement.appendChild(counter);
+            }
+            
+            counter.textContent = `${currentLength}/${maxLength} characters`;
+            
+            if (currentLength > maxLength * 0.9) {
+                counter.style.color = '#e53e3e';
+            } else {
+                counter.style.color = '#666';
+            }
+        });
+    </script>
+</body>
+</html>

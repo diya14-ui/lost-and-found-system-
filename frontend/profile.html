@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Campus Lost & Found</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="profile-page">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">🔍</span>
+                    <span class="logo-text">Campus Lost & Found</span>
+                </a>
+            </div>
+            <div class="navbar-center">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lost.html">Lost Items</a></li>
+                    <li><a href="found.html">Found Items</a></li>
+                    <li><a href="profile.html" class="active">Profile</a></li>
+                </ul>
+            </div>
+            <div class="navbar-right">
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Profile Header Section -->
+        <section class="profile-header">
+            <div class="profile-container">
+                <div class="profile-info">
+                    <div class="profile-photo">
+                        <div class="profile-avatar">👤</div>
+                    </div>
+                    <div class="profile-details">
+                        <h1 class="student-name">John Smith</h1>
+                        <p class="student-email">john.smith@university.edu</p>
+                        <p class="student-roll">Roll No: CS21B1023</p>
+                        <p class="student-department">Computer Science - 3rd Year</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section class="dashboard-section">
+            <div class="dashboard-container">
+                <h2 class="dashboard-title">My Dashboard</h2>
+                
+                <!-- Summary Boxes -->
+                <div class="summary-boxes">
+                    <div class="summary-box lost-summary">
+                        <div class="summary-icon">📋</div>
+                        <div class="summary-info">
+                            <h3>3</h3>
+                            <p>Lost Items Filed</p>
+                        </div>
+                    </div>
+                    <div class="summary-box found-summary">
+                        <div class="summary-icon">✅</div>
+                        <div class="summary-info">
+                            <h3>1</h3>
+                            <p>Found Items Uploaded</p>
+                        </div>
+                    </div>
+                    <div class="summary-box pending-summary">
+                        <div class="summary-icon">⏳</div>
+                        <div class="summary-info">
+                            <h3>1</h3>
+                            <p>Pending Claims</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="dashboard-buttons">
+                    <div class="button-row">
+                        <a href="lost.html" class="dashboard-btn lost-btn">
+                            <div class="btn-icon">📋</div>
+                            <div class="btn-content">
+                                <h3>My Lost Items</h3>
+                                <p>View all items you've reported as lost</p>
+                            </div>
+                        </a>
+                        <a href="found.html" class="dashboard-btn found-btn">
+                            <div class="btn-icon">🔍</div>
+                            <div class="btn-content">
+                                <h3>My Found Items</h3>
+                                <p>View all items you've reported as found</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="add-item-section">
+                        <h3 class="add-item-title">Report New Item</h3>
+                        <div class="add-item-buttons">
+                            <a href="post.html?type=lost" class="add-btn lost-add-btn">
+                                <span class="add-icon">➕</span>
+                                Report Lost Item
+                            </a>
+                            <a href="post.html?type=found" class="add-btn found-add-btn">
+                                <span class="add-icon">➕</span>
+                                Report Found Item
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity Section -->
+        <section class="recent-activity">
+            <div class="activity-container">
+                <h3 class="activity-title">Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon lost-activity">📋</div>
+                        <div class="activity-details">
+                            <h4>Lost iPhone 13</h4>
+                            <p>Reported 2 days ago at Library</p>
+                        </div>
+                        <span class="activity-status pending">Pending</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon found-activity">✅</div>
+                        <div class="activity-details">
+                            <h4>Found Water Bottle</h4>
+                            <p>Reported 5 days ago at Cafeteria</p>
+                        </div>
+                        <span class="activity-status claimed">Claimed</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon lost-activity">📋</div>
+                        <div class="activity-details">
+                            <h4>Lost Backpack</h4>
+                            <p>Reported 1 week ago at Gym</p>
+                        </div>
+                        <span class="activity-status pending">Pending</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear any stored login data
+                localStorage.removeItem('userLoggedIn');
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
+
+    <style>
+        /* Profile Page Specific Styles */
+        .profile-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Profile Header */
+        .profile-header {
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            color: white;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-photo {
+            flex-shrink: 0;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            backdrop-filter: blur(10px);
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .profile-details {
+            text-align: left;
+        }
+
+        .student-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .student-email, .student-roll, .student-department {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Dashboard Section */
+        .dashboard-section {
+            background: white;
+            margin: -2rem 2rem 2rem;
+            border-radius: 25px;
+            padding: 3rem 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Summary Boxes */
+        .summary-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .summary-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .lost-summary {
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .found-summary {
+            border-left: 4px solid #51cf66;
+        }
+
+        .pending-summary {
+            border-left: 4px solid #ffd43b;
+        }
+
+        .summary-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+
+        .summary-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+
+        .summary-info p {
+            color: #666;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* Dashboard Buttons */
+        .dashboard-buttons {
+            margin-top: 2rem;
+        }
+
+        .button-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(102, 126, 234, 0.4);
+        }
+
+        .dashboard-btn .btn-icon {
+            font-size: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-btn .btn-content h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .dashboard-btn .btn-content p {
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* Add Item Section */
+        .add-item-section {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px dashed #ddd;
+        }
+
+        .add-item-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .add-item-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .add-btn {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .add-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Recent Activity */
+        .recent-activity {
+            background: white;
+            margin: 2rem;
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .activity-title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .activity-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .lost-activity {
+            background: rgba(255, 107, 107, 0.2);
+        }
+
+        .found-activity {
+            background: rgba(81, 207, 102, 0.2);
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            margin: 0 0 0.3rem 0;
+            color: #333;
+        }
+
+        .activity-details p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .activity-status {
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .activity-status.pending {
+            background: rgba(255, 212, 59, 0.2);
+            color: #d69e2e;
+        }
+
+        .activity-status.claimed {
+            background: rgba(81, 207, 102, 0.2);
+            color: #38a169;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-details {
+                text-align: center;
+            }
+
+            .student-name {
+                font-size: 2rem;
+            }
+
+            .summary-boxes {
+                grid-template-columns: 1fr;
+            }
+
+            .button-row {
+                grid-template-columns: 1fr;
+            }
+
+            .add-item-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .activity-item {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</body>
+</html>

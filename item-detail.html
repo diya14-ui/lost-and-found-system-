@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Details - Campus Lost & Found</title>
+    <link rel="stylesheet" href="frontend/css/style.css">
+</head>
+<body>
+    <div class="item-detail-page">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="frontend/index.html" class="logo">
+                    <span class="logo-icon">🔍</span>
+                    <span class="logo-text">Campus Lost & Found</span>
+                </a>
+            </div>
+            <div class="navbar-center">
+                <ul class="nav-links">
+                    <li><a href="frontend/index.html">Home</a></li>
+                    <li><a href="frontend/lost.html">Lost Items</a></li>
+                    <li><a href="frontend/found.html">Found Items</a></li>
+                    <li><a href="frontend/profile.html">Profile</a></li>
+                </ul>
+            </div>
+            <div class="navbar-right">
+                <a href="frontend/login.html" class="btn-auth">Login</a>
+            </div>
+        </nav>
+
+        <!-- Page Header -->
+        <section class="item-detail-hero">
+            <div class="hero-container">
+                <div class="breadcrumb">
+                    <a href="frontend/found.html">← Back to Found Items</a>
+                </div>
+                <h1 class="item-detail-title">Item Details</h1>
+                <p class="item-detail-subtitle">View complete information about this item</p>
+            </div>
+        </section>
+
+        <!-- Item Details Content -->
+        <section class="item-detail-content">
+            <div class="detail-container">
+                <div class="detail-layout">
+                    <!-- Left Side - Image -->
+                    <div class="item-image-section">
+                        <div class="item-image-container">
+                            <div class="item-image">
+                                <span class="item-placeholder">📱</span>
+                            </div>
+                            <div class="image-gallery">
+                                <div class="thumbnail active">📱</div>
+                                <div class="thumbnail">📷</div>
+                                <div class="thumbnail">🔍</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Details -->
+                    <div class="item-info-section">
+                        <div class="item-status-badge found-badge">
+                            <span class="status-icon">✅</span>
+                            Found Item
+                        </div>
+
+                        <h2 class="item-name">iPhone 13 Pro Max</h2>
+                        
+                        <div class="item-details-grid">
+                            <div class="detail-row">
+                                <div class="detail-label">
+                                    <span class="detail-icon">🏷️</span>
+                                    Category
+                                </div>
+                                <div class="detail-value">Electronics</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">
+                                    <span class="detail-icon">📅</span>
+                                    Date Found
+                                </div>
+                                <div class="detail-value">November 25, 2025</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">
+                                    <span class="detail-icon">📍</span>
+                                    Location
+                                </div>
+                                <div class="detail-value">Main Library - 2nd Floor</div>
+                            </div>
+
+                            <div class="detail-row description-row">
+                                <div class="detail-label">
+                                    <span class="detail-icon">📝</span>
+                                    Description
+                                </div>
+                                <div class="detail-value description-text">
+                                    Found this iPhone 13 Pro Max in Space Gray color near the study tables on the 2nd floor of the Main Library. It was left on the table around 3:30 PM. The phone has a clear case with some stickers on it. Battery was at 15% when found. No damage visible on the device.
+                                </div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">
+                                    <span class="detail-icon">👤</span>
+                                    Posted By
+                                </div>
+                                <div class="detail-value posted-by">
+                                    <div class="poster-info">
+                                        <div class="poster-avatar">JS</div>
+                                        <div class="poster-details">
+                                            <div class="poster-name">John Smith</div>
+                                            <div class="poster-role">Student - Computer Science</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="item-actions">
+                            <button class="claim-btn primary-btn">
+                                <span class="btn-icon">🤝</span>
+                                Claim This Item
+                            </button>
+                            <button class="contact-btn secondary-btn">
+                                <span class="btn-icon">💬</span>
+                                Contact Finder
+                            </button>
+                        </div>
+
+                        <!-- Additional Info -->
+                        <div class="additional-info">
+                            <div class="info-card">
+                                <h4>How to Claim</h4>
+                                <ul>
+                                    <li>Click "Claim This Item" button</li>
+                                    <li>Provide proof of ownership</li>
+                                    <li>Meet with the finder to collect</li>
+                                    <li>Show valid student ID</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Similar Items -->
+        <section class="similar-items">
+            <div class="similar-container">
+                <h3 class="similar-title">Similar Items</h3>
+                <div class="similar-grid">
+                    <div class="similar-item-card">
+                        <div class="similar-item-image">📱</div>
+                        <div class="similar-item-info">
+                            <h4>iPhone 12</h4>
+                            <p>Found at Student Center</p>
+                        </div>
+                    </div>
+                    <div class="similar-item-card">
+                        <div class="similar-item-image">📱</div>
+                        <div class="similar-item-info">
+                            <h4>Samsung Galaxy</h4>
+                            <p>Found at Library</p>
+                        </div>
+                    </div>
+                    <div class="similar-item-card">
+                        <div class="similar-item-image">🎧</div>
+                        <div class="similar-item-info">
+                            <h4>AirPods Pro</h4>
+                            <p>Found at Cafeteria</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="frontend/js/app.js"></script>
+    <script>
+        // Claim item functionality
+        document.querySelector('.claim-btn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to claim this item? You will need to provide proof of ownership.')) {
+                alert('Claim request submitted! Please check your email for next steps.');
+            }
+        });
+
+        // Contact finder functionality
+        document.querySelector('.contact-btn').addEventListener('click', function() {
+            alert('Contact information will be shared via email to maintain privacy.');
+        });
+
+        // Image gallery functionality
+        document.querySelectorAll('.thumbnail').forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
