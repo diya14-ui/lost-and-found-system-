@@ -5,159 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile - Campus Lost & Found</title>
     <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <div class="profile-page">
-        <!-- Navigation Bar -->
-        <nav class="navbar">
-            <div class="navbar-left">
-                <a href="index.html" class="logo">
-                    <span class="logo-icon">🔍</span>
-                    <span class="logo-text">Campus Lost & Found</span>
-                </a>
-            </div>
-            <div class="navbar-center">
-                <ul class="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="lost.html">Lost Items</a></li>
-                    <li><a href="found.html">Found Items</a></li>
-                    <li><a href="profile.html" class="active">Profile</a></li>
-                </ul>
-            </div>
-            <div class="navbar-right">
-                <button class="logout-btn" onclick="logout()">Logout</button>
-            </div>
-        </nav>
-
-        <!-- Profile Header Section -->
-        <section class="profile-header">
-            <div class="profile-container">
-                <div class="profile-info">
-                    <div class="profile-photo">
-                        <div class="profile-avatar">👤</div>
-                    </div>
-                    <div class="profile-details">
-                        <h1 class="student-name">John Smith</h1>
-                        <p class="student-email">john.smith@university.edu</p>
-                        <p class="student-roll">Roll No: CS21B1023</p>
-                        <p class="student-department">Computer Science - 3rd Year</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dashboard Section -->
-        <section class="dashboard-section">
-            <div class="dashboard-container">
-                <h2 class="dashboard-title">My Dashboard</h2>
-                
-                <!-- Summary Boxes -->
-                <div class="summary-boxes">
-                    <div class="summary-box lost-summary">
-                        <div class="summary-icon">📋</div>
-                        <div class="summary-info">
-                            <h3>3</h3>
-                            <p>Lost Items Filed</p>
-                        </div>
-                    </div>
-                    <div class="summary-box found-summary">
-                        <div class="summary-icon">✅</div>
-                        <div class="summary-info">
-                            <h3>1</h3>
-                            <p>Found Items Uploaded</p>
-                        </div>
-                    </div>
-                    <div class="summary-box pending-summary">
-                        <div class="summary-icon">⏳</div>
-                        <div class="summary-info">
-                            <h3>1</h3>
-                            <p>Pending Claims</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Buttons -->
-                <div class="dashboard-buttons">
-                    <div class="button-row">
-                        <a href="lost.html" class="dashboard-btn lost-btn">
-                            <div class="btn-icon">📋</div>
-                            <div class="btn-content">
-                                <h3>My Lost Items</h3>
-                                <p>View all items you've reported as lost</p>
-                            </div>
-                        </a>
-                        <a href="found.html" class="dashboard-btn found-btn">
-                            <div class="btn-icon">🔍</div>
-                            <div class="btn-content">
-                                <h3>My Found Items</h3>
-                                <p>View all items you've reported as found</p>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <div class="add-item-section">
-                        <h3 class="add-item-title">Report New Item</h3>
-                        <div class="add-item-buttons">
-                            <a href="post.html?type=lost" class="add-btn lost-add-btn">
-                                <span class="add-icon">➕</span>
-                                Report Lost Item
-                            </a>
-                            <a href="post.html?type=found" class="add-btn found-add-btn">
-                                <span class="add-icon">➕</span>
-                                Report Found Item
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Recent Activity Section -->
-        <section class="recent-activity">
-            <div class="activity-container">
-                <h3 class="activity-title">Recent Activity</h3>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon lost-activity">📋</div>
-                        <div class="activity-details">
-                            <h4>Lost iPhone 13</h4>
-                            <p>Reported 2 days ago at Library</p>
-                        </div>
-                        <span class="activity-status pending">Pending</span>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon found-activity">✅</div>
-                        <div class="activity-details">
-                            <h4>Found Water Bottle</h4>
-                            <p>Reported 5 days ago at Cafeteria</p>
-                        </div>
-                        <span class="activity-status claimed">Claimed</span>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon lost-activity">📋</div>
-                        <div class="activity-details">
-                            <h4>Lost Backpack</h4>
-                            <p>Reported 1 week ago at Gym</p>
-                        </div>
-                        <span class="activity-status pending">Pending</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <script src="js/app.js"></script>
-    <script>
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                // Clear any stored login data
-                localStorage.removeItem('userLoggedIn');
-                // Redirect to login page
-                window.location.href = 'login.html';
-            }
-        }
-    </script>
-
     <style>
         /* Profile Page Specific Styles */
         .profile-page {
@@ -532,5 +379,157 @@
             }
         }
     </style>
+</head>
+<body>
+    <div class="profile-page">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">🔍</span>
+                    <span class="logo-text">Campus Lost & Found</span>
+                </a>
+            </div>
+            <div class="navbar-center">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lost.html">Lost Items</a></li>
+                    <li><a href="found.html">Found Items</a></li>
+                    <li><a href="profile.html" class="active">Profile</a></li>
+                </ul>
+            </div>
+            <div class="navbar-right">
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Profile Header Section -->
+        <section class="profile-header">
+            <div class="profile-container">
+                <div class="profile-info">
+                    <div class="profile-photo">
+                        <div class="profile-avatar">👤</div>
+                    </div>
+                    <div class="profile-details">
+                        <h1 class="student-name">John Smith</h1>
+                        <p class="student-email">john.smith@university.edu</p>
+                        <p class="student-roll">Roll No: CS21B1023</p>
+                        <p class="student-department">Computer Science - 3rd Year</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section class="dashboard-section">
+            <div class="dashboard-container">
+                <h2 class="dashboard-title">My Dashboard</h2>
+                
+                <!-- Summary Boxes -->
+                <div class="summary-boxes">
+                    <div class="summary-box lost-summary">
+                        <div class="summary-icon">📋</div>
+                        <div class="summary-info">
+                            <h3>3</h3>
+                            <p>Lost Items Filed</p>
+                        </div>
+                    </div>
+                    <div class="summary-box found-summary">
+                        <div class="summary-icon">✅</div>
+                        <div class="summary-info">
+                            <h3>1</h3>
+                            <p>Found Items Uploaded</p>
+                        </div>
+                    </div>
+                    <div class="summary-box pending-summary">
+                        <div class="summary-icon">⏳</div>
+                        <div class="summary-info">
+                            <h3>1</h3>
+                            <p>Pending Claims</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="dashboard-buttons">
+                    <div class="button-row">
+                        <a href="lost.html" class="dashboard-btn lost-btn">
+                            <div class="btn-icon">📋</div>
+                            <div class="btn-content">
+                                <h3>My Lost Items</h3>
+                                <p>View all items you've reported as lost</p>
+                            </div>
+                        </a>
+                        <a href="found.html" class="dashboard-btn found-btn">
+                            <div class="btn-icon">🔍</div>
+                            <div class="btn-content">
+                                <h3>My Found Items</h3>
+                                <p>View all items you've reported as found</p>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <div class="add-item-section">
+                        <h3 class="add-item-title">Report New Item</h3>
+                        <div class="add-item-buttons">
+                            <a href="post.html?type=lost" class="add-btn lost-add-btn">
+                                <span class="add-icon">➕</span>
+                                Report Lost Item
+                            </a>
+                            <a href="post.html?type=found" class="add-btn found-add-btn">
+                                <span class="add-icon">➕</span>
+                                Report Found Item
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity Section -->
+        <section class="recent-activity">
+            <div class="activity-container">
+                <h3 class="activity-title">Recent Activity</h3>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon lost-activity">📋</div>
+                        <div class="activity-details">
+                            <h4>Lost iPhone 13</h4>
+                            <p>Reported 2 days ago at Library</p>
+                        </div>
+                        <span class="activity-status pending">Pending</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon found-activity">✅</div>
+                        <div class="activity-details">
+                            <h4>Found Water Bottle</h4>
+                            <p>Reported 5 days ago at Cafeteria</p>
+                        </div>
+                        <span class="activity-status claimed">Claimed</span>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon lost-activity">📋</div>
+                        <div class="activity-details">
+                            <h4>Lost Backpack</h4>
+                            <p>Reported 1 week ago at Gym</p>
+                        </div>
+                        <span class="activity-status pending">Pending</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear any stored login data
+                localStorage.removeItem('userLoggedIn');
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        }
+    </script>
 </body>
 </html>
