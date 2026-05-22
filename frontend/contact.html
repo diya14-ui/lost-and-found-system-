@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Contact - Campus Lost & Found</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Use a clean system font stack for modern look */
+        body, input, textarea, button { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, system-ui, sans-serif; }
+        body { color: #0f172a; }
+        .contact-page { max-width: 920px; margin: 2.5rem auto; padding: 1.5rem; }
+        .contact-card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(2,6,23,0.06); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1rem; }
+        .contact-info { padding: 1rem; }
+        .contact-form label { display:block; margin:0.6rem 0 0.25rem; font-weight:600 }
+        .contact-form input, .contact-form textarea { width:100%; padding:0.8rem; border-radius:8px; border:1px solid #e6e7eb; background:#ffffff; color:#0f172a; font-size:0.95rem }
+        .contact-form textarea { min-height:140px; resize:vertical }
+        .contact-form button { margin-top:0.8rem; padding:0.7rem; border-radius:10px; border: none; background: #0b5fff; color: #fff; font-weight:700; cursor: pointer }
+        .contact-form button:active { transform: translateY(1px) }
+        .contact-form input::placeholder, .contact-form textarea::placeholder { color: #9ca3af; font-style: italic; }
+        .messages-list { margin-top:0.6rem; font-size:0.95rem }
+        .note { margin-top:0.8rem; color:#374151 }
+        /* Make saved message blocks use nicer typography */
+        .messages-list div { font-size: 0.95rem; line-height: 1.4 }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="index.html" class="logo"><div class="logo-icon">🔍</div><span class="logo-text">Campus Lost and Found</span></a>
+        </div>
+        <div class="navbar-center">
+            <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="lost.html">Lost Items</a></li><li><a href="found.html">Found Items</a></li><li><a href="help.html">Help</a></li></ul>
+        </div>
+        <div class="navbar-right">
+            <a href="login.html" class="btn-auth">Login/Register</a>
+        </div>
+    </nav>
+
+    <main class="contact-page">
+        <div class="contact-card">
+            <h1>Contact Support</h1>
+            <p class="note">Use this page to send a message to the site administrators. This is a temporary local message store — messages are saved in your browser (not sent) until the backend email feature is configured.</p>
+
+            <div class="contact-grid">
+                <div>
+                    <form id="contactForm" class="contact-form">
+                        <label for="name">Your name</label>
+                        <input id="name" name="name" placeholder="Jane Doe">
+
+                        <label for="email">Your email</label>
+                        <input id="email" name="email" type="email" placeholder="you@school.edu">
+
+                        <label for="subject">Subject</label>
+                        <input id="subject" name="subject" placeholder="Short subject">
+
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" placeholder="Describe the issue or request"></textarea>
+
+                        <button id="sendBtn" type="submit">Save Message (local)</button>
+                        <p id="saveStatus" class="note"></p>
+                    </form>
+
+                    <div class="messages-list">
+                        <h3>Saved messages (local)</h3>
+                        <div id="savedMessages"></div>
+                    </div>
+                </div>
+                <aside class="contact-info">
+                    <h3>Direct contact</h3>
+                    <p>Email: admin@campus.edu</p>
+                    <p>Phone: (555) 123-4567</p>
+                    <p class="note">When SMTP/email is configured on the server, this form can be wired to send messages to the admin automatically.</p>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            const form = document.getElementById('contactForm');
+            const saveStatus = document.getElementById('saveStatus');
+            const savedMessages = document.getElementById('savedMessages');
+
+            function loadMessages() {
+                const raw = localStorage.getItem('contactMessages');
+                let arr = [];
+                try { arr = raw ? JSON.parse(raw) : []; } catch (e) { arr = []; }
+                renderList(arr);
+            }
+
+            function renderList(arr) {
+                if (!arr.length) {
+                    savedMessages.innerHTML = '<p class="note">No saved messages.</p>';
+                    return;
+                }
+                savedMessages.innerHTML = arr.map(m => `
+                    <div style="padding:0.6rem;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:0.6rem;">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                            <strong>${escapeHtml(m.subject || 'No subject')}</strong>
+                            <div style="font-size:0.85rem;color:#065f46">${m.synced ? 'Sent' : 'Local'}</div>
+                        </div>
+                        <div style="font-size:0.95rem;color:#374151">From: ${escapeHtml(m.name||'Anonymous')} &lt;${escapeHtml(m.email||'')}&gt;</div>
+                        <div style="margin-top:0.4rem">${escapeHtml(m.message||'')}</div>
+                        <div style="margin-top:0.4rem;font-size:0.85rem;color:#6b7280">Saved: ${new Date(m.ts).toLocaleString()}</div>
+                    </div>
+                `).join('');
+            }
+
+            function escapeHtml(s) {
+                return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+            }
+
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                if (!subject || !message) {
+                    saveStatus.textContent = 'Please provide a subject and message.';
+                    return;
+                }
+
+                // Build message object and save locally immediately so user sees instant feedback
+                const msg = { name, email, subject, message, ts: Date.now(), synced: false };
+                const raw = localStorage.getItem('contactMessages');
+                let arr = [];
+                try { arr = raw ? JSON.parse(raw) : []; } catch (e) { arr = []; }
+                arr.unshift(msg);
+                try { localStorage.setItem('contactMessages', JSON.stringify(arr)); } catch (e) { saveStatus.textContent = 'Unable to save message locally.'; return; }
+                saveStatus.textContent = 'Saved locally. Attempting to send to server...';
+                form.reset();
+                loadMessages();
+
+                // Attempt to POST to backend (use page origin when available, otherwise try localhost:5000)
+                const originCandidate = (window.location && window.location.protocol && window.location.protocol.startsWith('http')) ? window.location.origin : 'http://127.0.0.1:5000';
+                const url = `${originCandidate}/api/contact`;
+                try {
+                    const resp = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, subject, message }),
+                    });
+                    const result = await resp.json().catch(() => ({}));
+                    const serverMsg = (result && result.message) ? result.message : (resp.statusText || `HTTP ${resp.status}`);
+                    if (resp.ok && result && result.success) {
+                        saveStatus.textContent = `Saved to server. ${serverMsg}`;
+                        // mark the most recent local message as synced (optional)
+                        try {
+                            const raw2 = localStorage.getItem('contactMessages');
+                            let arr2 = raw2 ? JSON.parse(raw2) : [];
+                            if (arr2.length) {
+                                arr2[0].synced = true;
+                                arr2[0].serverId = result.data && result.data.id ? result.data.id : null;
+                                localStorage.setItem('contactMessages', JSON.stringify(arr2));
+                                loadMessages();
+                            }
+                        } catch (e) { /* ignore */ }
+                        return;
+                    }
+                    // Show server response (if any) and make clear message remains saved locally
+                    saveStatus.textContent = `Saved locally. Server response: ${serverMsg}`;
+                } catch (err) {
+                    saveStatus.textContent = 'Server unreachable; message saved locally.';
+                }
+            });
+
+            loadMessages();
+        })();
+    </script>
+</body>
+</html>

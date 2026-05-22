@@ -288,6 +288,11 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.file-info.error {
+    color: #b42318;
+    font-weight: 600;
+}
+
 /* Submit Button */
 .submit-btn {
     background: linear-gradient(135deg, #667eea, #764ba2);
@@ -316,6 +321,29 @@
     background: linear-gradient(135deg, #5a67d8, #667eea);
     transform: translateY(-3px);
     box-shadow: 0 16px 45px rgba(102, 126, 234, 0.45);
+}
+
+.report-submit-status {
+    margin-top: 0.8rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: none;
+}
+
+.report-submit-status.error {
+    display: block;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    color: #be123c;
+}
+
+.report-submit-status.success {
+    display: block;
+    background: #ecfdf3;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
 }
 
 .submit-btn:active {

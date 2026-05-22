@@ -76,6 +76,37 @@
     box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
 }
 
+.login-btn:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.form-status {
+    min-height: 22px;
+    margin-top: 4px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: left;
+    visibility: hidden;
+}
+
+.form-status.error {
+    visibility: visible;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    color: #be123c;
+}
+
+.form-status.success {
+    visibility: visible;
+    background: #ecfdf3;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+}
+
 .remember-me {
     display: flex;
     align-items: center;

@@ -12,6 +12,29 @@
             min-height: 100vh;
         }
 
+        .page-status {
+            max-width: 1000px;
+            margin: 1rem auto;
+            padding: 0.9rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .page-status.loading {
+            display: block;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .page-status.error {
+            display: block;
+            background: #fff1f2;
+            color: #be123c;
+            border: 1px solid #fecdd3;
+        }
+
         /* Logout Button */
         .logout-btn {
             background: rgba(255, 255, 255, 0.2);
@@ -30,6 +53,101 @@
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .logout-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .logout-modal.show {
+            display: flex;
+        }
+
+        .logout-modal-card {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 1.4rem;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+            animation: modalIn 0.18s ease;
+        }
+
+        .logout-modal-title {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #202020;
+        }
+
+        .logout-modal-text {
+            margin: 0.8rem 0 1.2rem;
+            color: #525252;
+            line-height: 1.5;
+        }
+
+        .logout-modal-actions {
+            display: flex;
+            gap: 0.7rem;
+            justify-content: flex-end;
+        }
+
+        .logout-cancel-btn,
+        .logout-confirm-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 0.6rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .logout-cancel-btn {
+            background: #eef2ff;
+            color: #3730a3;
+        }
+
+        .logout-cancel-btn:hover {
+            background: #e0e7ff;
+        }
+
+        .logout-confirm-btn {
+            background: #dc2626;
+            color: #ffffff;
+        }
+
+        .logout-confirm-btn:hover {
+            background: #b91c1c;
+        }
+
+        .logout-confirm-btn:disabled,
+        .logout-cancel-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         /* Profile Header */
@@ -67,6 +185,169 @@
             font-size: 3rem;
             backdrop-filter: blur(10px);
             border: 4px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            position: relative;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.03);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        /* Keep hint for accessibility but hide visually; provide subtle hover affordance instead */
+        .profile-photo-hint {
+            position: absolute;
+            left: -9999px; /* visually hidden but still available to screen readers */
+        }
+
+        .profile-avatar::after {
+            content: '🔍';
+            position: absolute;
+            right: -6px;
+            bottom: -6px;
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+            pointer-events: none;
+        }
+
+        .profile-avatar:hover::after,
+        .profile-avatar:focus::after {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .photo-viewer-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 15, 40, 0.78);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            padding: 1rem;
+        }
+
+        .photo-viewer-modal.show {
+            display: flex;
+        }
+
+        .photo-viewer-card {
+            width: min(92vw, 820px);
+            max-height: 92vh;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+            animation: modalIn 0.18s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .photo-viewer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .photo-viewer-title {
+            margin: 0;
+            color: #0f172a;
+            font-size: 1.1rem;
+        }
+
+        .photo-viewer-close {
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #0f172a;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .photo-viewer-close:hover {
+            background: #cbd5e1;
+        }
+
+        .photo-viewer-body {
+            padding: 1rem;
+            background: radial-gradient(circle at top, rgba(102, 126, 234, 0.08), transparent 42%), #f8fafc;
+        }
+
+        .photo-viewer-frame {
+            width: 100%;
+            max-height: 72vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .photo-viewer-frame img {
+            width: 100%;
+            height: 100%;
+            max-height: 72vh;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+        }
+
+        .photo-viewer-caption {
+            margin-top: 0.9rem;
+            color: #475569;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .photo-viewer-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0 1rem 1rem;
+        }
+
+        .photo-viewer-button {
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .photo-viewer-button:hover {
+            filter: brightness(1.05);
         }
 
         .profile-details {
@@ -345,6 +626,15 @@
             color: #38a169;
         }
 
+        .empty-activity {
+            text-align: center;
+            color: #666;
+            padding: 1.2rem;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border: 1px dashed #d9dee3;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .profile-info {
@@ -382,6 +672,8 @@
 </head>
 <body>
     <div class="profile-page">
+        <div id="profileStatus" class="page-status loading">Loading your dashboard...</div>
+
         <!-- Navigation Bar -->
         <nav class="navbar">
             <div class="navbar-left">
@@ -399,22 +691,52 @@
                 </ul>
             </div>
             <div class="navbar-right">
-                <button class="logout-btn" onclick="logout()">Logout</button>
+                <button class="logout-btn" onclick="openLogoutConfirm()">Logout</button>
             </div>
         </nav>
+
+        <div id="logoutModal" class="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle">
+            <div class="logout-modal-card">
+                <h3 id="logoutModalTitle" class="logout-modal-title">Logout from your account?</h3>
+                <p class="logout-modal-text">You will be signed out from this device. You can log in again anytime.</p>
+                <div class="logout-modal-actions">
+                    <button id="logoutCancelBtn" class="logout-cancel-btn" type="button" onclick="closeLogoutConfirm()">Cancel</button>
+                    <button id="logoutConfirmBtn" class="logout-confirm-btn" type="button" onclick="confirmLogout()">Yes, logout</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="photoViewerModal" class="photo-viewer-modal" role="dialog" aria-modal="true" aria-labelledby="photoViewerTitle">
+            <div class="photo-viewer-card">
+                <div class="photo-viewer-header">
+                    <h3 id="photoViewerTitle" class="photo-viewer-title">Profile Photo Preview</h3>
+                    <button id="photoViewerCloseBtn" class="photo-viewer-close" type="button" aria-label="Close photo preview">&times;</button>
+                </div>
+                <div class="photo-viewer-body">
+                    <div class="photo-viewer-frame">
+                        <img id="photoViewerImage" alt="Profile photo preview" />
+                    </div>
+                    <div id="photoViewerCaption" class="photo-viewer-caption"></div>
+                </div>
+                <div class="photo-viewer-actions">
+                    <button id="photoViewerDoneBtn" class="photo-viewer-button" type="button">Done</button>
+                </div>
+            </div>
+        </div>
 
         <!-- Profile Header Section -->
         <section class="profile-header">
             <div class="profile-container">
                 <div class="profile-info">
                     <div class="profile-photo">
-                        <div class="profile-avatar">👤</div>
+                        <div class="profile-avatar" id="profileAvatar" role="button" tabindex="0" aria-label="View profile photo">👤</div>
+                        <div class="profile-photo-hint" id="profilePhotoHint">Click the photo to view it full size.</div>
                     </div>
                     <div class="profile-details">
-                        <h1 class="student-name">John Smith</h1>
-                        <p class="student-email">john.smith@university.edu</p>
-                        <p class="student-roll">Roll No: CS21B1023</p>
-                        <p class="student-department">Computer Science - 3rd Year</p>
+                        <h1 class="student-name" id="profileName">Loading...</h1>
+                        <p class="student-email" id="profileEmail">Loading...</p>
+                        <p class="student-roll" id="profileStudentId">Student ID: Loading...</p>
+                        <p class="student-department" id="profileDepartment">Department: Not provided</p>
                     </div>
                 </div>
             </div>
@@ -423,28 +745,28 @@
         <!-- Dashboard Section -->
         <section class="dashboard-section">
             <div class="dashboard-container">
-                <h2 class="dashboard-title">My Dashboard</h2>
+                <h2 class="dashboard-title">ACCOUNT OVERVIEW</h2>
                 
                 <!-- Summary Boxes -->
                 <div class="summary-boxes">
                     <div class="summary-box lost-summary">
                         <div class="summary-icon">📋</div>
                         <div class="summary-info">
-                            <h3>3</h3>
+                            <h3 id="lostCount">0</h3>
                             <p>Lost Items Filed</p>
                         </div>
                     </div>
                     <div class="summary-box found-summary">
                         <div class="summary-icon">✅</div>
                         <div class="summary-info">
-                            <h3>1</h3>
+                            <h3 id="foundCount">0</h3>
                             <p>Found Items Uploaded</p>
                         </div>
                     </div>
                     <div class="summary-box pending-summary">
                         <div class="summary-icon">⏳</div>
                         <div class="summary-info">
-                            <h3>1</h3>
+                            <h3 id="pendingClaims">0</h3>
                             <p>Pending Claims</p>
                         </div>
                     </div>
@@ -490,46 +812,219 @@
         <section class="recent-activity">
             <div class="activity-container">
                 <h3 class="activity-title">Recent Activity</h3>
-                <div class="activity-list">
-                    <div class="activity-item">
-                        <div class="activity-icon lost-activity">📋</div>
-                        <div class="activity-details">
-                            <h4>Lost iPhone 13</h4>
-                            <p>Reported 2 days ago at Library</p>
-                        </div>
-                        <span class="activity-status pending">Pending</span>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon found-activity">✅</div>
-                        <div class="activity-details">
-                            <h4>Found Water Bottle</h4>
-                            <p>Reported 5 days ago at Cafeteria</p>
-                        </div>
-                        <span class="activity-status claimed">Claimed</span>
-                    </div>
-                    <div class="activity-item">
-                        <div class="activity-icon lost-activity">📋</div>
-                        <div class="activity-details">
-                            <h4>Lost Backpack</h4>
-                            <p>Reported 1 week ago at Gym</p>
-                        </div>
-                        <span class="activity-status pending">Pending</span>
-                    </div>
+                <div class="activity-list" id="activityList">
+                    <div class="empty-activity">Your recent activity will appear here as you use the system.</div>
                 </div>
             </div>
         </section>
     </div>
 
+    <script src="js/api.js"></script>
     <script src="js/app.js"></script>
     <script>
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                // Clear any stored login data
-                localStorage.removeItem('userLoggedIn');
-                // Redirect to login page
-                window.location.href = 'login.html';
+        const profileStatus = document.getElementById('profileStatus');
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileStudentId = document.getElementById('profileStudentId');
+        const profileDepartment = document.getElementById('profileDepartment');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profilePhotoHint = document.getElementById('profilePhotoHint');
+        const photoViewerModal = document.getElementById('photoViewerModal');
+        const photoViewerImage = document.getElementById('photoViewerImage');
+        const photoViewerCaption = document.getElementById('photoViewerCaption');
+        const photoViewerCloseBtn = document.getElementById('photoViewerCloseBtn');
+        const photoViewerDoneBtn = document.getElementById('photoViewerDoneBtn');
+        const lostCount = document.getElementById('lostCount');
+        const foundCount = document.getElementById('foundCount');
+        const pendingClaims = document.getElementById('pendingClaims');
+        let currentProfileImageUrl = '';
+
+        function getApiOrigin() {
+            try {
+                return new URL(getApiBaseUrl()).origin;
+            } catch (error) {
+                return 'http://127.0.0.1:5000';
             }
         }
+
+        function resolveProfileImageUrl(imageUrl) {
+            if (!imageUrl) return '';
+            if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
+            const normalizedPath = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+            return `${getApiOrigin()}${normalizedPath}`;
+        }
+
+        function getStoredProfileImageUrl() {
+            try {
+                const storedUser = JSON.parse(localStorage.getItem('authUser') || '{}');
+                return storedUser.profileImageUrl || localStorage.getItem('profileImageUrl') || '';
+            } catch (error) {
+                return localStorage.getItem('profileImageUrl') || '';
+            }
+        }
+
+        function openPhotoViewer() {
+            if (!currentProfileImageUrl) {
+                return;
+            }
+
+            photoViewerImage.src = currentProfileImageUrl;
+            photoViewerImage.alt = `${profileName.textContent || 'User'} profile photo preview`;
+            photoViewerCaption.textContent = 'This preview shows the full uploaded image so you can check the face, framing, and image quality.';
+            photoViewerModal.classList.add('show');
+        }
+
+        function closePhotoViewer() {
+            photoViewerModal.classList.remove('show');
+            photoViewerImage.removeAttribute('src');
+        }
+
+        function showPageStatus(message, type) {
+            profileStatus.textContent = message;
+            profileStatus.className = `page-status ${type}`;
+        }
+
+        function hidePageStatus() {
+            profileStatus.textContent = '';
+            profileStatus.className = 'page-status';
+        }
+
+        function clearAuthSession() {
+            localStorage.removeItem('userLoggedIn');
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('authUser');
+            sessionStorage.removeItem('userLoggedIn');
+            sessionStorage.removeItem('authToken');
+            sessionStorage.removeItem('authUser');
+        }
+
+        async function loadDashboard() {
+            const token = getAuthToken();
+
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                showPageStatus('Loading your dashboard...', 'loading');
+
+                const [meRes, statsRes] = await Promise.all([
+                    fetch(`${getApiBaseUrl()}/users/me`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    }),
+                    fetch(`${getApiBaseUrl()}/users/me/stats`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    })
+                ]);
+
+                if (meRes.status === 401 || statsRes.status === 401) {
+                    clearAuthSession();
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const meResult = await meRes.json();
+                const statsResult = await statsRes.json();
+
+                if (!meRes.ok || !meResult.success) {
+                    showPageStatus(meResult.message || 'Could not load profile data.', 'error');
+                    return;
+                }
+
+                const user = meResult.data;
+
+                profileName.textContent = user.name || 'User';
+                profileEmail.textContent = user.email || 'No email available';
+                profileStudentId.textContent = `Student ID: ${user.student_id || 'Not set'}`;
+                profileDepartment.textContent = `Department: ${user.department || 'Not provided'}`;
+
+                const profileImageUrl = user.profile_image_url || user.profileImageUrl || getStoredProfileImageUrl();
+                const imageUrl = resolveProfileImageUrl(profileImageUrl);
+                currentProfileImageUrl = imageUrl;
+
+                if (imageUrl) {
+                    profileAvatar.innerHTML = '';
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = `${user.name || 'User'} profile photo`;
+                    profileAvatar.appendChild(img);
+                    profileAvatar.setAttribute('aria-label', 'Open full-size profile photo');
+                    profilePhotoHint.textContent = 'Click the photo to inspect the full image.';
+                } else {
+                    profileAvatar.textContent = (user.name || 'U').charAt(0).toUpperCase();
+                    profileAvatar.setAttribute('aria-label', 'Profile photo not available');
+                    profilePhotoHint.textContent = 'No profile photo uploaded yet.';
+                }
+
+                localStorage.setItem('authUser', JSON.stringify({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    studentId: user.student_id,
+                    department: user.department,
+                    profileImageUrl: profileImageUrl || null
+                }));
+
+                if (statsRes.ok && statsResult.success) {
+                    lostCount.textContent = String(statsResult.data.lostItemsFiled ?? 0);
+                    foundCount.textContent = String(statsResult.data.foundItemsUploaded ?? 0);
+                    pendingClaims.textContent = String(statsResult.data.pendingClaims ?? 0);
+                }
+
+                hidePageStatus();
+            } catch (error) {
+                showPageStatus('Could not connect to backend. Please make sure API server is running.', 'error');
+            }
+        }
+
+        function openLogoutConfirm() {
+            const modal = document.getElementById('logoutModal');
+            modal.classList.add('show');
+        }
+
+        function closeLogoutConfirm() {
+            const modal = document.getElementById('logoutModal');
+            modal.classList.remove('show');
+        }
+
+        function confirmLogout() {
+            const logoutBtn = document.querySelector('.logout-btn');
+            const confirmBtn = document.getElementById('logoutConfirmBtn');
+            const cancelBtn = document.getElementById('logoutCancelBtn');
+
+            confirmBtn.disabled = true;
+            cancelBtn.disabled = true;
+            clearAuthSession();
+            logoutBtn.disabled = true;
+            logoutBtn.textContent = 'Logging out...';
+            window.location.href = 'login.html';
+        }
+
+        profileAvatar.addEventListener('click', openPhotoViewer);
+        profileAvatar.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openPhotoViewer();
+            }
+        });
+
+        photoViewerCloseBtn.addEventListener('click', closePhotoViewer);
+        photoViewerDoneBtn.addEventListener('click', closePhotoViewer);
+        photoViewerModal.addEventListener('click', (event) => {
+            if (event.target === photoViewerModal) {
+                closePhotoViewer();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closePhotoViewer();
+                closeLogoutConfirm();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', loadDashboard);
     </script>
 </body>
 </html>

@@ -33,7 +33,7 @@
         <section class="claim-hero">
             <div class="hero-container">
                 <div class="breadcrumb">
-                    <a href="item-detail.html">← Back to Item Details</a>
+                    <a href="item-detail.html" id="backToDetailsLink">← Back to Item Details</a>
                 </div>
                 <h1 class="claim-title">Claim This Item</h1>
                 <p class="claim-subtitle">Please provide information to verify your ownership</p>
@@ -46,22 +46,22 @@
                 <!-- Item Summary Card -->
                 <div class="item-summary-card">
                     <div class="item-preview">
-                        <div class="item-preview-image">📱</div>
+                        <div class="item-preview-image" id="itemPreviewImage">📦</div>
                         <div class="item-preview-info">
-                            <h3>iPhone 13 Pro Max</h3>
+                            <h3 id="itemPreviewName">Loading item...</h3>
                             <div class="item-meta">
                                 <span class="meta-item">
                                     <span class="meta-icon">📍</span>
-                                    Main Library - 2nd Floor
+                                    <span id="itemPreviewLocation">Loading...</span>
                                 </span>
                                 <span class="meta-item">
                                     <span class="meta-icon">📅</span>
-                                    Found on Nov 25, 2025
+                                    <span id="itemPreviewDate">Loading...</span>
                                 </span>
                             </div>
                             <div class="finder-info">
-                                <span class="finder-avatar">JS</span>
-                                <span class="finder-name">Found by John Smith</span>
+                                <span class="finder-avatar" id="finderAvatar">--</span>
+                                <span class="finder-name" id="finderName">Loading poster...</span>
                             </div>
                         </div>
                     </div>
@@ -74,6 +74,8 @@
                             <h2>Claim Request Form</h2>
                             <p>Please provide detailed information to help us verify your ownership</p>
                         </div>
+
+                        <div class="claim-submit-status" id="claimSubmitStatus" aria-live="polite"></div>
 
                         <!-- Ownership Explanation -->
                         <div class="form-group">
@@ -163,7 +165,7 @@
 
                         <!-- Submit Button -->
                         <div class="form-actions">
-                            <button type="submit" class="submit-claim-btn">
+                            <button type="submit" class="submit-claim-btn" id="submitClaimBtn" disabled>
                                 <span class="btn-icon">🤝</span>
                                 Submit Claim Request
                             </button>
@@ -206,13 +208,29 @@
         </section>
     </div>
 
+    <script src="frontend/js/api.js"></script>
     <script src="frontend/js/app.js"></script>
     <script>
+        const claimItemUrlParams = new URLSearchParams(window.location.search);
+        const claimItemId = claimItemUrlParams.get('itemId') || claimItemUrlParams.get('id');
+
         // File upload functionality
         const fileUploadArea = document.getElementById('fileUploadArea');
         const fileInput = document.getElementById('proofUpload');
         const uploadedFilesContainer = document.getElementById('uploadedFiles');
+        const claimSubmitStatus = document.getElementById('claimSubmitStatus');
+        const agreeTermsCheckbox = document.getElementById('agreeTerms');
+        const submitClaimBtn = document.getElementById('submitClaimBtn');
         let uploadedFiles = [];
+
+        function showClaimStatus(message, type) {
+            claimSubmitStatus.textContent = message;
+            claimSubmitStatus.className = `claim-submit-status ${type}`;
+        }
+
+        function syncSubmitButtonState() {
+            submitClaimBtn.disabled = !agreeTermsCheckbox.checked;
+        }
 
         // Click to upload
         fileUploadArea.addEventListener('click', () => {
@@ -240,18 +258,22 @@
             handleFiles(e.target.files);
         });
 
+        agreeTermsCheckbox.addEventListener('change', syncSubmitButtonState);
+        syncSubmitButtonState();
+
         function handleFiles(files) {
             for (let file of files) {
                 if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                    alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                    showClaimStatus(`File ${file.name} is too large. Maximum size is 5MB.`, 'error');
                     continue;
                 }
                 
                 if (uploadedFiles.length < 5) { // Max 5 files
                     uploadedFiles.push(file);
                     displayUploadedFile(file);
+                    showClaimStatus('', '');
                 } else {
-                    alert('Maximum 5 files allowed');
+                    showClaimStatus('Maximum 5 files allowed.', 'error');
                     break;
                 }
             }
@@ -280,10 +302,25 @@
         }
 
         // Form submission
-        document.getElementById('claimForm').addEventListener('submit', function(e) {
+        document.getElementById('claimForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+
+            const itemId = claimItemId;
+
+            if (!agreeTermsCheckbox.checked) {
+                showClaimStatus('Please tick the checkbox to confirm the terms before submitting.', 'error');
+                return;
+            }
+
+            if (!itemId) {
+                showClaimStatus('Missing item id. Please open claim from the item details page.', 'error');
+                return;
+            }
+
+            showClaimStatus('', '');
             
             const formData = new FormData();
+            formData.append('itemId', itemId);
             formData.append('ownershipReason', document.getElementById('ownershipReason').value);
             formData.append('contactNumber', document.getElementById('contactNumber').value);
             formData.append('additionalInfo', document.getElementById('additionalInfo').value);
@@ -292,18 +329,113 @@
                 formData.append('proofFiles', file);
             });
             
-            // Simulate form submission
             const submitBtn = document.querySelector('.submit-claim-btn');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<span class="btn-icon">⏳</span>Submitting...';
             submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('Claim request submitted successfully! You will receive updates via email and phone.');
-                // Redirect back to item details or profile
-                window.location.href = 'item-detail.html';
-            }, 2000);
+
+            try {
+                const authToken = localStorage.getItem('authToken');
+                const response = await fetch(`${getApiBaseUrl()}/claims`, {
+                    method: 'POST',
+                    headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+                    body: formData
+                });
+
+                const result = await response.json();
+                if (!response.ok || !result.success) {
+                    showClaimStatus(result.message || 'Failed to submit claim.', 'error');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+
+                showClaimStatus('Claim request submitted successfully. Redirecting to item details...', 'success');
+                setTimeout(() => {
+                    window.location.href = `item-detail.html?itemId=${itemId}`;
+                }, 900);
+            } catch (error) {
+                showClaimStatus('Could not connect to backend. Please start the API server.', 'error');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         });
+
+        async function loadClaimItem() {
+            if (!claimItemId) {
+                document.getElementById('itemPreviewName').textContent = 'Missing item id';
+                document.getElementById('itemPreviewLocation').textContent = 'Open claim from item details page';
+                document.getElementById('itemPreviewDate').textContent = '-';
+                document.getElementById('finderName').textContent = '-';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${getApiBaseUrl()}/items/${claimItemId}`);
+                const result = await response.json();
+
+                if (!response.ok || !result.success || !result.data) {
+                    throw new Error(result.message || 'Unable to load item');
+                }
+
+                const item = result.data;
+                const previewImage = document.getElementById('itemPreviewImage');
+                const previewName = document.getElementById('itemPreviewName');
+                const previewLocation = document.getElementById('itemPreviewLocation');
+                const previewDate = document.getElementById('itemPreviewDate');
+                const finderAvatar = document.getElementById('finderAvatar');
+                const finderName = document.getElementById('finderName');
+                const backLink = document.getElementById('backToDetailsLink');
+
+                const itemType = (item.item_type || '').toLowerCase();
+                backLink.href = `item-detail.html?id=${item.id}`;
+
+                previewName.textContent = item.item_name || 'Unnamed Item';
+                previewLocation.textContent = item.location_text || 'Location not provided';
+                previewDate.textContent = `${itemType === 'lost' ? 'Lost on' : 'Found on'} ${item.date_value || '-'}`;
+                finderName.textContent = `Posted by ${item.reporter_name || 'Anonymous'}`;
+
+                const initials = (item.reporter_name || '--')
+                    .split(' ')
+                    .filter(Boolean)
+                    .slice(0, 2)
+                    .map(part => part[0].toUpperCase())
+                    .join('') || '--';
+                finderAvatar.textContent = initials;
+
+                if (item.image_url) {
+                    const image = document.createElement('img');
+                    image.src = item.image_url.startsWith('http') ? item.image_url : `${new URL(getApiBaseUrl()).origin}${item.image_url}`;
+                    image.alt = item.item_name || 'Item photo';
+                    image.style.width = '100%';
+                    image.style.height = '100%';
+                    image.style.objectFit = 'contain';
+                    image.style.objectPosition = 'center';
+                    previewImage.textContent = '';
+                    previewImage.appendChild(image);
+                } else {
+                    previewImage.textContent = getItemEmoji(item.category);
+                }
+            } catch (error) {
+                document.getElementById('itemPreviewName').textContent = 'Unable to load item';
+                document.getElementById('itemPreviewLocation').textContent = error.message || 'Try again later';
+                document.getElementById('itemPreviewDate').textContent = '-';
+            }
+        }
+
+        function getItemEmoji(category) {
+            const categoryMap = {
+                electronics: '📱',
+                clothing: '👕',
+                accessories: '🕶️',
+                documents: '📄',
+                bags: '🎒',
+                keys: '🔑'
+            };
+            return categoryMap[(category || '').toLowerCase()] || '📦';
+        }
+
+        loadClaimItem();
 
         // Character count for textarea
         document.getElementById('ownershipReason').addEventListener('input', function() {

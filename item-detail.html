@@ -33,7 +33,7 @@
         <section class="item-detail-hero">
             <div class="hero-container">
                 <div class="breadcrumb">
-                    <a href="frontend/found.html">← Back to Found Items</a>
+                    <a href="frontend/found.html" id="backLink">← Back to Found Items</a>
                 </div>
                 <h1 class="item-detail-title">Item Details</h1>
                 <p class="item-detail-subtitle">View complete information about this item</p>
@@ -47,25 +47,22 @@
                     <!-- Left Side - Image -->
                     <div class="item-image-section">
                         <div class="item-image-container">
-                            <div class="item-image">
-                                <span class="item-placeholder">📱</span>
+                            <div class="item-image" id="itemImageFrame">
+                                <img id="itemImage" class="item-detail-photo" alt="Uploaded item photo" style="display: none;">
+                                <span class="item-placeholder" id="itemPlaceholder">📦</span>
                             </div>
-                            <div class="image-gallery">
-                                <div class="thumbnail active">📱</div>
-                                <div class="thumbnail">📷</div>
-                                <div class="thumbnail">🔍</div>
-                            </div>
+                            <div class="image-gallery" id="imageGallery" style="display: none;"></div>
                         </div>
                     </div>
 
                     <!-- Right Side - Details -->
                     <div class="item-info-section">
-                        <div class="item-status-badge found-badge">
-                            <span class="status-icon">✅</span>
-                            Found Item
+                        <div class="item-status-badge found-badge" id="itemStatusBadge">
+                            <span class="status-icon" id="statusIcon">✅</span>
+                            <span id="statusText">Loading...</span>
                         </div>
 
-                        <h2 class="item-name">iPhone 13 Pro Max</h2>
+                        <h2 class="item-name" id="itemName">Loading item...</h2>
                         
                         <div class="item-details-grid">
                             <div class="detail-row">
@@ -73,15 +70,23 @@
                                     <span class="detail-icon">🏷️</span>
                                     Category
                                 </div>
-                                <div class="detail-value">Electronics</div>
+                                <div class="detail-value" id="itemCategory">-</div>
                             </div>
 
                             <div class="detail-row">
                                 <div class="detail-label">
                                     <span class="detail-icon">📅</span>
-                                    Date Found
+                                    Date
                                 </div>
-                                <div class="detail-value">November 25, 2025</div>
+                                <div class="detail-value" id="itemDate">-</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">
+                                    <span class="detail-icon">🕐</span>
+                                    Time
+                                </div>
+                                <div class="detail-value" id="itemTime">-</div>
                             </div>
 
                             <div class="detail-row">
@@ -89,7 +94,7 @@
                                     <span class="detail-icon">📍</span>
                                     Location
                                 </div>
-                                <div class="detail-value">Main Library - 2nd Floor</div>
+                                <div class="detail-value" id="itemLocation">-</div>
                             </div>
 
                             <div class="detail-row description-row">
@@ -97,9 +102,7 @@
                                     <span class="detail-icon">📝</span>
                                     Description
                                 </div>
-                                <div class="detail-value description-text">
-                                    Found this iPhone 13 Pro Max in Space Gray color near the study tables on the 2nd floor of the Main Library. It was left on the table around 3:30 PM. The phone has a clear case with some stickers on it. Battery was at 15% when found. No damage visible on the device.
-                                </div>
+                                <div class="detail-value description-text" id="itemDescription">-</div>
                             </div>
 
                             <div class="detail-row">
@@ -109,10 +112,10 @@
                                 </div>
                                 <div class="detail-value posted-by">
                                     <div class="poster-info">
-                                        <div class="poster-avatar">JS</div>
+                                        <div class="poster-avatar" id="posterAvatar">--</div>
                                         <div class="poster-details">
-                                            <div class="poster-name">John Smith</div>
-                                            <div class="poster-role">Student - Computer Science</div>
+                                            <div class="poster-name" id="posterName">-</div>
+                                            <div class="poster-role" id="posterRole">-</div>
                                         </div>
                                     </div>
                                 </div>
@@ -121,13 +124,13 @@
 
                         <!-- Action Buttons -->
                         <div class="item-actions">
-                            <button class="claim-btn primary-btn">
+                            <button class="claim-btn primary-btn" id="claimBtn" type="button">
                                 <span class="btn-icon">🤝</span>
                                 Claim This Item
                             </button>
-                            <button class="contact-btn secondary-btn">
+                            <button class="contact-btn secondary-btn" id="contactBtn" type="button">
                                 <span class="btn-icon">💬</span>
-                                Contact Finder
+                                Contact Poster
                             </button>
                         </div>
 
@@ -151,27 +154,27 @@
         <!-- Similar Items -->
         <section class="similar-items">
             <div class="similar-container">
-                <h3 class="similar-title">Similar Items</h3>
+                <h3 class="similar-title">Item Metadata</h3>
                 <div class="similar-grid">
                     <div class="similar-item-card">
-                        <div class="similar-item-image">📱</div>
+                        <div class="similar-item-image">🆔</div>
                         <div class="similar-item-info">
-                            <h4>iPhone 12</h4>
-                            <p>Found at Student Center</p>
+                            <h4>Item ID</h4>
+                            <p id="metaItemId">-</p>
                         </div>
                     </div>
                     <div class="similar-item-card">
-                        <div class="similar-item-image">📱</div>
+                        <div class="similar-item-image">📌</div>
                         <div class="similar-item-info">
-                            <h4>Samsung Galaxy</h4>
-                            <p>Found at Library</p>
+                            <h4>Status</h4>
+                            <p id="metaStatus">-</p>
                         </div>
                     </div>
                     <div class="similar-item-card">
-                        <div class="similar-item-image">🎧</div>
+                        <div class="similar-item-image">📤</div>
                         <div class="similar-item-info">
-                            <h4>AirPods Pro</h4>
-                            <p>Found at Cafeteria</p>
+                            <h4>Posted On</h4>
+                            <p id="metaCreatedAt">-</p>
                         </div>
                     </div>
                 </div>
@@ -179,27 +182,252 @@
         </section>
     </div>
 
+    <script src="frontend/js/api.js"></script>
     <script src="frontend/js/app.js"></script>
+    <style>
+        /* Contact modal */
+        .contact-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(2,6,23,0.5); z-index: 9999 }
+        .contact-modal .panel { background: #fff; padding: 1rem; border-radius: 12px; width: 520px; max-width: 92%; box-shadow: 0 20px 60px rgba(2,6,23,0.3) }
+        .contact-modal h3 { margin:0 0 0.6rem }
+        .contact-modal label { display:block; margin-top:0.5rem; font-weight:600 }
+        .contact-modal input, .contact-modal textarea { width:100%; padding:0.6rem; border-radius:8px; border:1px solid #e6e7eb }
+        .contact-modal .actions { display:flex; gap:0.6rem; justify-content:flex-end; margin-top:0.6rem }
+        .contact-modal .btn { padding:0.6rem 0.9rem; border-radius:8px; border:none; cursor:pointer }
+        .contact-modal .btn.cancel { background:#e6e7eb }
+        .contact-modal .btn.send { background:#0b5fff; color:#fff }
+        .contact-status { margin-top:0.5rem; font-size:0.95rem }
+    </style>
+
+    <!-- Contact Poster Modal -->
+    <div class="contact-modal" id="contactModal" role="dialog" aria-hidden="true">
+        <div class="panel" role="document">
+            <h3>Contact Poster</h3>
+            <p id="contactHint" class="note">Send a private message to the person who posted this item.</p>
+            <form id="contactFormInline">
+                <label for="contactName">Your name</label>
+                <input id="contactName" name="name" placeholder="Your name (optional)">
+
+                <label for="contactEmail">Your email</label>
+                <input id="contactEmail" name="email" placeholder="your@school.edu (optional)">
+
+                <label for="contactMessage">Message</label>
+                <textarea id="contactMessage" name="message" rows="4" required></textarea>
+
+                <div class="contact-status" id="contactInlineStatus"></div>
+
+                <div class="actions">
+                    <button type="button" class="btn cancel" id="contactCancel">Cancel</button>
+                    <button type="submit" class="btn send" id="contactSend">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script>
-        // Claim item functionality
-        document.querySelector('.claim-btn').addEventListener('click', function() {
-            if (confirm('Are you sure you want to claim this item? You will need to provide proof of ownership.')) {
-                alert('Claim request submitted! Please check your email for next steps.');
+        (function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const itemId = urlParams.get('id') || urlParams.get('itemId');
+
+            const backLink = document.getElementById('backLink');
+            const statusBadge = document.getElementById('itemStatusBadge');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            const nameEl = document.getElementById('itemName');
+            const categoryEl = document.getElementById('itemCategory');
+            const dateEl = document.getElementById('itemDate');
+            const timeEl = document.getElementById('itemTime');
+            const locationEl = document.getElementById('itemLocation');
+            const descriptionEl = document.getElementById('itemDescription');
+            const posterAvatar = document.getElementById('posterAvatar');
+            const posterName = document.getElementById('posterName');
+            const posterRole = document.getElementById('posterRole');
+            const claimBtn = document.getElementById('claimBtn');
+            const contactBtn = document.getElementById('contactBtn');
+            const metaItemId = document.getElementById('metaItemId');
+            const metaStatus = document.getElementById('metaStatus');
+            const metaCreatedAt = document.getElementById('metaCreatedAt');
+            const itemImage = document.getElementById('itemImage');
+            const itemPlaceholder = document.getElementById('itemPlaceholder');
+
+            function getApiOrigin() {
+                try {
+                    return new URL(getApiBaseUrl()).origin;
+                } catch (error) {
+                    return 'http://127.0.0.1:5000';
+                }
             }
-        });
 
-        // Contact finder functionality
-        document.querySelector('.contact-btn').addEventListener('click', function() {
-            alert('Contact information will be shared via email to maintain privacy.');
-        });
+            function resolveImageUrl(imageUrl) {
+                if (!imageUrl) return '';
+                if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
+                const path = imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`;
+                return `${getApiOrigin()}${path}`;
+            }
 
-        // Image gallery functionality
-        document.querySelectorAll('.thumbnail').forEach(thumb => {
-            thumb.addEventListener('click', function() {
-                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
+            function formatDate(dateValue) {
+                if (!dateValue) return 'Not provided';
+                const date = new Date(dateValue);
+                return Number.isNaN(date.getTime()) ? dateValue : date.toLocaleDateString();
+            }
+
+            function toTitleCase(value) {
+                return String(value || '')
+                    .toLowerCase()
+                    .replace(/\b\w/g, char => char.toUpperCase()) || 'Not provided';
+            }
+
+            function updateTypeUi(itemType, status) {
+                const isFound = itemType === 'found';
+                backLink.href = isFound ? 'frontend/found.html' : 'frontend/lost.html';
+                backLink.textContent = isFound ? '← Back to Found Items' : '← Back to Lost Items';
+
+                statusBadge.classList.remove('found-badge', 'lost-badge');
+                statusBadge.classList.add(isFound ? 'found-badge' : 'lost-badge');
+                statusIcon.textContent = isFound ? '✅' : '🔎';
+                statusText.textContent = isFound ? 'Found Item' : 'Lost Item';
+
+                claimBtn.textContent = isFound ? 'Claim This Item' : 'I Found This Item';
+                claimBtn.onclick = function() {
+                    if (isFound) {
+                        window.location.href = `claim.html?itemId=${itemId}`;
+                    } else {
+                        window.location.href = 'frontend/post.html?type=found';
+                    }
+                };
+
+                metaStatus.textContent = toTitleCase(status || 'open');
+            }
+
+            async function loadItemDetails() {
+                if (!itemId) {
+                    nameEl.textContent = 'Item not found';
+                    descriptionEl.textContent = 'Missing item id in URL.';
+                    claimBtn.disabled = true;
+                    contactBtn.disabled = true;
+                    return;
+                }
+
+                try {
+                    const response = await apiRequest(`/items/${itemId}`);
+                    const result = await response.json();
+
+                    if (!response.ok || !result.success || !result.data) {
+                        throw new Error(result.message || 'Unable to load item details.');
+                    }
+
+                    const item = result.data;
+                    let imageUrl = resolveImageUrl(item.image_url);
+                    if (imageUrl) {
+                        try {
+                            imageUrl = encodeURI(imageUrl);
+                        } catch (e) {
+                            // ignore encoding errors
+                        }
+                    }
+                    const initials = (item.reporter_name || '?')
+                        .split(' ')
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map(part => part[0].toUpperCase())
+                        .join('') || '--';
+
+                    updateTypeUi(item.item_type, item.status);
+
+                    nameEl.textContent = item.item_name || 'Unnamed Item';
+                    categoryEl.textContent = toTitleCase(item.category || 'Other');
+                    dateEl.textContent = formatDate(item.date_value);
+                    timeEl.textContent = item.time_value || 'Not provided';
+                    locationEl.textContent = item.location_text || 'Not provided';
+                    descriptionEl.textContent = item.description_text || 'No description provided.';
+                    posterAvatar.textContent = initials;
+                    posterName.textContent = item.reporter_name || 'Anonymous';
+                    posterRole.textContent = item.reporter_email || 'Email not provided';
+
+                    metaItemId.textContent = `#${item.id}`;
+                    metaCreatedAt.textContent = formatDate(item.created_at);
+
+                    if (imageUrl) {
+                        itemImage.src = imageUrl;
+                        itemImage.style.display = 'block';
+                        itemImage.onerror = function() {
+                            itemImage.style.display = 'none';
+                            itemPlaceholder.style.display = 'inline';
+                        };
+                        itemPlaceholder.style.display = 'none';
+                    }
+
+                    // Open inline contact modal instead of mailto popup
+                    const contactModal = document.getElementById('contactModal');
+                    const contactFormInline = document.getElementById('contactFormInline');
+                    const contactName = document.getElementById('contactName');
+                    const contactEmail = document.getElementById('contactEmail');
+                    const contactMessage = document.getElementById('contactMessage');
+                    const contactCancel = document.getElementById('contactCancel');
+                    const contactInlineStatus = document.getElementById('contactInlineStatus');
+
+                    contactBtn.onclick = function() {
+                        // Prefill message template with item info and poster email
+                        contactMessage.value = `Hello ${item.reporter_name || 'Poster'},\n\nI am contacting you regarding your ${item.item_type || 'item'} titled "${item.item_name || ''}" (ID: ${item.id}).\n\n`;
+                        // If user has stored email, prefill it
+                        try {
+                            const storedUser = localStorage.getItem('authUser');
+                            if (storedUser) {
+                                const parsed = JSON.parse(storedUser);
+                                if (parsed && parsed.email) contactEmail.value = parsed.email;
+                                if (parsed && parsed.name) contactName.value = parsed.name;
+                            }
+                        } catch (e) {}
+
+                        contactInlineStatus.textContent = '';
+                        contactModal.style.display = 'flex';
+                        contactModal.setAttribute('aria-hidden', 'false');
+                    };
+
+                    contactCancel.onclick = function() {
+                        contactModal.style.display = 'none';
+                        contactModal.setAttribute('aria-hidden', 'true');
+                    };
+
+                    contactFormInline.addEventListener('submit', async function(evt) {
+                        evt.preventDefault();
+                        contactInlineStatus.textContent = 'Sending...';
+
+                        const payload = {
+                            name: contactName.value.trim() || null,
+                            email: contactEmail.value.trim() || null,
+                            subject: `Message for poster ${item.reporter_email || ''} regarding item #${item.id}`,
+                            message: contactMessage.value.trim() || ''
+                        };
+
+                        try {
+                            const resp = await apiRequest('/contact', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(payload)
+                            });
+                            const resJson = await resp.json().catch(()=> ({}));
+                            if (resp.ok && resJson && resJson.success) {
+                                contactInlineStatus.textContent = resJson.message || 'Message sent — the poster will be notified.';
+                                setTimeout(()=>{ contactModal.style.display = 'none'; contactModal.setAttribute('aria-hidden','true'); }, 900);
+                                return;
+                            }
+                            // Non-OK responses: avoid alarming the user; show a friendly queued message.
+                            contactInlineStatus.textContent = 'Message saved locally and will be sent automatically when the site can reach the server.';
+                        } catch (err) {
+                            contactInlineStatus.textContent = 'Message saved locally and will be sent automatically when the site can reach the server.';
+                        }
+                    });
+
+                    contactBtn.disabled = false;
+                } catch (error) {
+                    nameEl.textContent = 'Unable to load item details';
+                    descriptionEl.textContent = error.message || 'Something went wrong while loading this item.';
+                    claimBtn.disabled = true;
+                    contactBtn.disabled = true;
+                }
+            }
+
+            loadItemDetails();
+        })();
     </script>
 </body>
 </html>

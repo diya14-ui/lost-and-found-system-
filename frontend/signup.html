@@ -11,41 +11,177 @@
     <h2>Create Account</h2>
     <p class="subtitle">Join the Lost & Found System</p>
 
-    <form>
+    <form id="signupForm">
         <div class="input-field">
-            <input type="text" placeholder=" " required />
+            <input type="text" id="name" name="name" placeholder=" " required />
             <label>Name</label>
         </div>
 
         <div class="input-field">
-            <input type="email" placeholder=" " required />
+            <input type="email" id="email" name="email" placeholder=" " required />
             <label>Email</label>
         </div>
 
         <div class="input-field">
-            <input type="text" placeholder=" " required />
+            <input type="text" id="studentId" name="studentId" placeholder=" " required />
             <label>Student ID</label>
         </div>
 
         <div class="input-field">
-            <input type="password" placeholder=" " required />
+            <label for="department" class="field-label">Department *</label>
+            <select id="department" name="department" class="department-select" required>
+                <option value="">Select your department</option>
+                <option value="CSE">CSE</option>
+                <option value="AI & DS">AI & DS</option>
+                <option value="ECE">ECE</option>
+                <option value="EEE">EEE</option>
+                <option value="Mechanical">Mechanical</option>
+                <option value="Civil">Civil</option>
+                <option value="MBA">MBA</option>
+                <option value="BBA">BBA</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="input-field" id="customDepartmentGroup" style="display: none;">
+            <input type="text" id="customDepartment" name="customDepartment" placeholder=" " />
+            <label for="customDepartment">Enter Your Department</label>
+        </div>
+
+        <div class="input-field">
+            <input type="password" id="password" name="password" placeholder=" " required />
             <label>Password</label>
         </div>
 
         <div class="input-field">
-            <input type="password" placeholder=" " required />
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " required />
             <label>Confirm Password</label>
         </div>
 
         <label class="upload-label">Upload Profile Photo (optional)</label>
-        <input type="file" accept="image/*" style="margin-bottom: 20px;" />
+        <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*" style="margin-bottom: 20px;" />
 
         <button type="submit" class="button">Sign Up</button>
+        <div id="signupStatus" class="signup-status" aria-live="polite"></div>
     </form>
 
     <p class="login-link">Already have an account? <a href="login.html">Login</a></p>
 </div>
 
+<script src="js/api.js"></script>
+<script>
+    const departmentSelect = document.getElementById('department');
+    const customDepartmentGroup = document.getElementById('customDepartmentGroup');
+    const customDepartmentInput = document.getElementById('customDepartment');
+    const signupPassword = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+
+    function blockPasswordCopying(inputElement) {
+        inputElement.setAttribute('autocomplete', 'new-password');
+        inputElement.setAttribute('spellcheck', 'false');
+        inputElement.addEventListener('copy', (event) => event.preventDefault());
+        inputElement.addEventListener('cut', (event) => event.preventDefault());
+    }
+
+    blockPasswordCopying(signupPassword);
+    blockPasswordCopying(confirmPasswordInput);
+
+    function handleDepartmentSelection() {
+        const isOther = departmentSelect.value === 'Other';
+        customDepartmentGroup.style.display = isOther ? 'block' : 'none';
+        customDepartmentInput.required = isOther;
+
+        if (!isOther) {
+            customDepartmentInput.value = '';
+        }
+    }
+
+    departmentSelect.addEventListener('change', handleDepartmentSelection);
+    handleDepartmentSelection();
+
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const statusEl = document.getElementById('signupStatus');
+        const submitBtn = this.querySelector('.button');
+        const originalBtnText = submitBtn.textContent;
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const studentId = document.getElementById('studentId').value.trim();
+        const selectedDepartment = document.getElementById('department').value.trim();
+        const customDepartment = customDepartmentInput.value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const profilePhoto = document.getElementById('profilePhoto').files[0];
+
+        let finalDepartment = selectedDepartment;
+
+        if (selectedDepartment === 'Other') {
+            finalDepartment = customDepartment;
+        }
+
+        function showStatus(message, type) {
+            statusEl.textContent = message;
+            statusEl.className = `signup-status ${type}`;
+        }
+
+        if (password !== confirmPassword) {
+            showStatus('Password and confirm password must match.', 'error');
+            return;
+        }
+
+        if (!selectedDepartment) {
+            showStatus('Please select your department.', 'error');
+            return;
+        }
+
+        if (!finalDepartment) {
+            showStatus('Please enter your department.', 'error');
+            return;
+        }
+
+        showStatus('', '');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating account...';
+
+        try {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('studentId', studentId);
+            formData.append('department', finalDepartment);
+            formData.append('password', password);
+            if (profilePhoto) {
+                formData.append('profilePhoto', profilePhoto);
+            }
+
+            const response = await apiRequest('/auth/signup', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            if (!response.ok || !result.success) {
+                showStatus(result.message || 'Signup failed.', 'error');
+                return;
+            }
+
+            setAuthSession(result.data);
+            if (result.data && result.data.user && result.data.user.profileImageUrl) {
+                localStorage.setItem('profileImageUrl', result.data.user.profileImageUrl);
+            }
+            showStatus('Account created successfully. Redirecting...', 'success');
+            setTimeout(() => {
+                window.location.href = 'profile.html';
+            }, 350);
+        } catch (error) {
+            showStatus('Could not connect to backend. Please start the API server.', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalBtnText;
+        }
+    });
+</script>
 
 </body>
 </html>

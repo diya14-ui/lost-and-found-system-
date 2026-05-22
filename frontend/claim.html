@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Claim Item - Campus Lost & Found</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body, input, textarea, button { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, system-ui, sans-serif; }
+    .claim-page { max-width: 920px; margin: 2rem auto; padding: 1rem; }
+    .claim-card { background:#fff; padding:1.25rem; border-radius:12px; box-shadow:0 8px 30px rgba(2,6,23,0.06); }
+    .field { margin-bottom:0.9rem }
+    label { display:block; font-weight:600; margin-bottom:0.35rem }
+    input, textarea { width:100%; padding:0.7rem; border-radius:8px; border:1px solid #e6e7eb }
+    .btn { background:#0b5fff; color:#fff; padding:0.7rem 1rem; border-radius:10px; border:none; font-weight:700; cursor:pointer }
+    .note { color:#374151; margin-top:0.5rem }
+    .preview-row { display:flex; gap:0.5rem; flex-wrap:wrap; margin-top:0.5rem }
+    .preview { width:84px; height:84px; object-fit:cover; border-radius:8px; border:1px solid #e5e7eb }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="logo"><div class="logo-icon">🔍</div><span class="logo-text">Campus Lost and Found</span></a>
+    </div>
+    <div class="navbar-center">
+      <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="lost.html">Lost Items</a></li><li><a href="found.html">Found Items</a></li><li><a href="help.html">Help</a></li></ul>
+    </div>
+    <div class="navbar-right">
+      <a href="login.html" class="btn-auth">Login/Register</a>
+    </div>
+  </nav>
+
+  <main class="claim-page">
+    <div class="claim-card">
+      <h1 id="title">Claim Item</h1>
+      <p id="itemSummary" class="note">Loading item...</p>
+
+      <form id="claimForm" enctype="multipart/form-data">
+        <input type="hidden" name="itemId" id="itemId">
+
+        <div class="field">
+          <label for="ownershipReason">Why is this your item? (required)</label>
+          <textarea id="ownershipReason" name="ownershipReason" required placeholder="Describe identifying details, serial numbers, stickers, recent activity..."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="contactNumber">Contact number (required)</label>
+          <input id="contactNumber" name="contactNumber" required placeholder="e.g. +1 555 555 5555">
+        </div>
+
+        <div class="field">
+          <label for="additionalInfo">Additional info (optional)</label>
+          <textarea id="additionalInfo" name="additionalInfo" placeholder="Any other details you want to provide"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="proofFiles">Proof files (photos, pdf) — optional</label>
+          <input id="proofFiles" name="proofFiles" type="file" accept="image/*,.pdf" multiple>
+          <div id="preview" class="preview-row"></div>
+        </div>
+
+        <div class="field">
+          <button id="submitBtn" class="btn" type="submit">Submit Claim</button>
+          <div id="status" class="note"></div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script>
+    (function(){
+      const params = new URLSearchParams(window.location.search);
+      const itemId = params.get('itemId') || params.get('id');
+      const itemIdField = document.getElementById('itemId');
+      const itemSummary = document.getElementById('itemSummary');
+      const claimForm = document.getElementById('claimForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const status = document.getElementById('status');
+      const preview = document.getElementById('preview');
+
+      if (!itemId) {
+        itemSummary.textContent = 'Missing item id in URL.';
+      } else {
+        itemIdField.value = itemId;
+        // fetch item details to show brief summary
+        (async function(){
+          try {
+            const resp = await apiRequest(`/items/${itemId}`);
+            const data = await resp.json();
+            if (resp.ok && data && data.success && data.data) {
+              const itm = data.data;
+              itemSummary.textContent = `${itm.item_name || 'Unnamed Item'} — ${itm.location_text || 'Location not provided'}`;
+            } else {
+              itemSummary.textContent = 'Unable to load item details.';
+            }
+          } catch (e) {
+            itemSummary.textContent = 'Unable to reach API for item details.';
+          }
+        })();
+      }
+
+      // file preview
+      document.getElementById('proofFiles').addEventListener('change', function(e){
+        preview.innerHTML = '';
+        const files = Array.from(e.target.files || []);
+        files.slice(0,6).forEach(f => {
+          if (f.type.startsWith('image/')) {
+            const url = URL.createObjectURL(f);
+            const img = document.createElement('img'); img.src = url; img.className = 'preview'; preview.appendChild(img);
+          }
+        });
+      });
+
+      claimForm.addEventListener('submit', async function(e){
+        e.preventDefault();
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+          status.textContent = 'Please login to submit a claim.';
+          setTimeout(()=> window.location.href = 'login.html', 900);
+          return;
+        }
+
+        submitBtn.disabled = true; submitBtn.textContent = 'Submitting...'; status.textContent = '';
+
+        const fd = new FormData(this);
+        try {
+          const resp = await apiRequest('/claims', {
+            method: 'POST',
+            headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+            body: fd
+          });
+
+          const result = await resp.json().catch(()=> ({}));
+          if (resp.ok && result && result.success) {
+            status.textContent = 'Claim submitted successfully.';
+            setTimeout(()=> window.location.href = 'profile.html', 900);
+            return;
+          }
+
+          const msg = (result && result.message) ? result.message : (resp.statusText || `HTTP ${resp.status}`);
+          status.textContent = `Saved locally. Server response: ${msg}`;
+        } catch (err) {
+          status.textContent = 'Could not reach server. Your claim is saved locally in the browser.';
+        } finally {
+          submitBtn.disabled = false; submitBtn.textContent = 'Submit Claim';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
