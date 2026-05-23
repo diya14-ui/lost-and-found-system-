@@ -12,7 +12,7 @@
         <nav class="navbar">
             <div class="navbar-left">
                 <a href="frontend/index.html" class="logo">
-                    <span class="logo-icon">🔍</span>
+                    <span class="logo-icon"><i data-lucide="search"></i></span>
                     <span class="logo-text">Campus Lost & Found</span>
                 </a>
             </div>
@@ -49,7 +49,7 @@
                         <div class="item-image-container">
                             <div class="item-image" id="itemImageFrame">
                                 <img id="itemImage" class="item-detail-photo" alt="Uploaded item photo" style="display: none;">
-                                <span class="item-placeholder" id="itemPlaceholder">📦</span>
+                                <span class="item-placeholder" id="itemPlaceholder"><i data-lucide="package"></i></span>
                             </div>
                             <div class="image-gallery" id="imageGallery" style="display: none;"></div>
                         </div>
@@ -58,7 +58,7 @@
                     <!-- Right Side - Details -->
                     <div class="item-info-section">
                         <div class="item-status-badge found-badge" id="itemStatusBadge">
-                            <span class="status-icon" id="statusIcon">✅</span>
+                            <span class="status-icon" id="statusIcon"><i data-lucide="check-circle-2"></i></span>
                             <span id="statusText">Loading...</span>
                         </div>
 
@@ -67,7 +67,7 @@
                         <div class="item-details-grid">
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon">🏷️</span>
+                                    <span class="detail-icon"><i data-lucide="tag"></i></span>
                                     Category
                                 </div>
                                 <div class="detail-value" id="itemCategory">-</div>
@@ -75,7 +75,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon">📅</span>
+                                    <span class="detail-icon"><i data-lucide="calendar"></i></span>
                                     Date
                                 </div>
                                 <div class="detail-value" id="itemDate">-</div>
@@ -83,7 +83,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon">🕐</span>
+                                    <span class="detail-icon"><i data-lucide="clock"></i></span>
                                     Time
                                 </div>
                                 <div class="detail-value" id="itemTime">-</div>
@@ -91,7 +91,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon">📍</span>
+                                    <span class="detail-icon"><i data-lucide="map-pin"></i></span>
                                     Location
                                 </div>
                                 <div class="detail-value" id="itemLocation">-</div>
@@ -99,7 +99,7 @@
 
                             <div class="detail-row description-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon">📝</span>
+                                    <span class="detail-icon"><i data-lucide="file-text"></i></span>
                                     Description
                                 </div>
                                 <div class="detail-value description-text" id="itemDescription">-</div>
@@ -107,7 +107,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon">👤</span>
+                                    <span class="detail-icon"><i data-lucide="user"></i></span>
                                     Posted By
                                 </div>
                                 <div class="detail-value posted-by">
@@ -125,11 +125,11 @@
                         <!-- Action Buttons -->
                         <div class="item-actions">
                             <button class="claim-btn primary-btn" id="claimBtn" type="button">
-                                <span class="btn-icon">🤝</span>
+                                <span class="btn-icon"><i data-lucide="handshake"></i></span>
                                 Claim This Item
                             </button>
                             <button class="contact-btn secondary-btn" id="contactBtn" type="button">
-                                <span class="btn-icon">💬</span>
+                                <span class="btn-icon"><i data-lucide="message-square"></i></span>
                                 Contact Poster
                             </button>
                         </div>
@@ -157,21 +157,21 @@
                 <h3 class="similar-title">Item Metadata</h3>
                 <div class="similar-grid">
                     <div class="similar-item-card">
-                        <div class="similar-item-image">🆔</div>
+                        <div class="similar-item-image"><i data-lucide="badge"></i></div>
                         <div class="similar-item-info">
                             <h4>Item ID</h4>
                             <p id="metaItemId">-</p>
                         </div>
                     </div>
                     <div class="similar-item-card">
-                        <div class="similar-item-image">📌</div>
+                        <div class="similar-item-image"><i data-lucide="pin"></i></div>
                         <div class="similar-item-info">
                             <h4>Status</h4>
                             <p id="metaStatus">-</p>
                         </div>
                     </div>
                     <div class="similar-item-card">
-                        <div class="similar-item-image">📤</div>
+                        <div class="similar-item-image"><i data-lucide="calendar-clock"></i></div>
                         <div class="similar-item-info">
                             <h4>Posted On</h4>
                             <p id="metaCreatedAt">-</p>
@@ -182,8 +182,10 @@
         </section>
     </div>
 
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="frontend/js/api.js"></script>
     <script src="frontend/js/app.js"></script>
+    <script src="frontend/js/ui.js"></script>
     <style>
         /* Contact modal */
         .contact-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(2,6,23,0.5); z-index: 9999 }
@@ -282,7 +284,8 @@
 
                 statusBadge.classList.remove('found-badge', 'lost-badge');
                 statusBadge.classList.add(isFound ? 'found-badge' : 'lost-badge');
-                statusIcon.textContent = isFound ? '✅' : '🔎';
+                statusIcon.innerHTML = `<i data-lucide="${isFound ? 'check-circle-2' : 'search'}"></i>`;
+                if (window.__lfRefreshIcons) window.__lfRefreshIcons();
                 statusText.textContent = isFound ? 'Found Item' : 'Lost Item';
 
                 claimBtn.textContent = isFound ? 'Claim This Item' : 'I Found This Item';

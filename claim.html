@@ -12,7 +12,7 @@
         <nav class="navbar">
             <div class="navbar-left">
                 <a href="frontend/index.html" class="logo">
-                    <span class="logo-icon">🔍</span>
+                    <span class="logo-icon"><i data-lucide="search"></i></span>
                     <span class="logo-text">Campus Lost & Found</span>
                 </a>
             </div>
@@ -46,16 +46,16 @@
                 <!-- Item Summary Card -->
                 <div class="item-summary-card">
                     <div class="item-preview">
-                        <div class="item-preview-image" id="itemPreviewImage">📦</div>
+                        <div class="item-preview-image" id="itemPreviewImage"><i data-lucide="package"></i></div>
                         <div class="item-preview-info">
                             <h3 id="itemPreviewName">Loading item...</h3>
                             <div class="item-meta">
                                 <span class="meta-item">
-                                    <span class="meta-icon">📍</span>
+                                    <span class="meta-icon"><i data-lucide="map-pin"></i></span>
                                     <span id="itemPreviewLocation">Loading...</span>
                                 </span>
                                 <span class="meta-item">
-                                    <span class="meta-icon">📅</span>
+                                    <span class="meta-icon"><i data-lucide="calendar"></i></span>
                                     <span id="itemPreviewDate">Loading...</span>
                                 </span>
                             </div>
@@ -80,7 +80,7 @@
                         <!-- Ownership Explanation -->
                         <div class="form-group">
                             <label class="form-label required">
-                                <span class="label-icon">❓</span>
+                                <span class="label-icon"><i data-lucide="help-circle"></i></span>
                                 Why do you think this item belongs to you?
                             </label>
                             <textarea 
@@ -98,13 +98,13 @@
                         <!-- Proof Upload -->
                         <div class="form-group">
                             <label class="form-label">
-                                <span class="label-icon">📎</span>
+                                <span class="label-icon"><i data-lucide="paperclip"></i></span>
                                 Upload Proof (Optional)
                             </label>
                             <div class="file-upload-area" id="fileUploadArea">
                                 <input type="file" id="proofUpload" accept="image/*,.pdf" multiple hidden>
                                 <div class="upload-content">
-                                    <span class="upload-icon">📤</span>
+                                    <span class="upload-icon"><i data-lucide="upload-cloud"></i></span>
                                     <p class="upload-text">
                                         <span class="upload-primary">Click to upload proof files</span>
                                         <span class="upload-secondary">or drag and drop here</span>
@@ -123,7 +123,7 @@
                         <!-- Contact Number -->
                         <div class="form-group">
                             <label class="form-label required">
-                                <span class="label-icon">📞</span>
+                                <span class="label-icon"><i data-lucide="phone"></i></span>
                                 Contact Number
                             </label>
                             <input 
@@ -141,7 +141,7 @@
                         <!-- Additional Details -->
                         <div class="form-group">
                             <label class="form-label">
-                                <span class="label-icon">ℹ️</span>
+                                <span class="label-icon"><i data-lucide="info"></i></span>
                                 Additional Information
                             </label>
                             <textarea 
@@ -166,7 +166,7 @@
                         <!-- Submit Button -->
                         <div class="form-actions">
                             <button type="submit" class="submit-claim-btn" id="submitClaimBtn" disabled>
-                                <span class="btn-icon">🤝</span>
+                                <span class="btn-icon"><i data-lucide="handshake"></i></span>
                                 Submit Claim Request
                             </button>
                         </div>
@@ -208,8 +208,10 @@
         </section>
     </div>
 
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="frontend/js/api.js"></script>
     <script src="frontend/js/app.js"></script>
+    <script src="frontend/js/ui.js"></script>
     <script>
         const claimItemUrlParams = new URLSearchParams(window.location.search);
         const claimItemId = claimItemUrlParams.get('itemId') || claimItemUrlParams.get('id');
@@ -283,12 +285,13 @@
             const fileItem = document.createElement('div');
             fileItem.className = 'uploaded-file-item';
             fileItem.innerHTML = `
-                <span class="file-icon">📄</span>
+                <span class="file-icon"><i data-lucide="file-text"></i></span>
                 <span class="file-name">${file.name}</span>
                 <span class="file-size">(${(file.size / 1024).toFixed(1)} KB)</span>
                 <button type="button" class="remove-file-btn" onclick="removeFile('${file.name}')">×</button>
             `;
             uploadedFilesContainer.appendChild(fileItem);
+            if (window.__lfRefreshIcons) window.__lfRefreshIcons();
         }
 
         function removeFile(fileName) {
@@ -414,7 +417,8 @@
                     previewImage.textContent = '';
                     previewImage.appendChild(image);
                 } else {
-                    previewImage.textContent = getItemEmoji(item.category);
+                    previewImage.innerHTML = getItemIconHtml(item.category);
+                    if (window.__lfRefreshIcons) window.__lfRefreshIcons();
                 }
             } catch (error) {
                 document.getElementById('itemPreviewName').textContent = 'Unable to load item';
@@ -423,16 +427,17 @@
             }
         }
 
-        function getItemEmoji(category) {
+        function getItemIconHtml(category) {
             const categoryMap = {
-                electronics: '📱',
-                clothing: '👕',
-                accessories: '🕶️',
-                documents: '📄',
-                bags: '🎒',
-                keys: '🔑'
+                electronics: 'smartphone',
+                clothing: 'shirt',
+                accessories: 'glasses',
+                documents: 'file-text',
+                bags: 'backpack',
+                keys: 'key-round'
             };
-            return categoryMap[(category || '').toLowerCase()] || '📦';
+            const name = categoryMap[(category || '').toLowerCase()] || 'package';
+            return `<i data-lucide="${name}"></i>`;
         }
 
         loadClaimItem();

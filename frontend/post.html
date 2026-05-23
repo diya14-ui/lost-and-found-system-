@@ -13,7 +13,7 @@
         <!-- Left side - Logo -->
         <div class="navbar-left">
             <a href="index.html" class="logo">
-                <div class="logo-icon">🔍</div>
+                <div class="logo-icon"><i data-lucide="search"></i></div>
                 <span class="logo-text">Campus Lost and Found</span>
             </a>
         </div>
@@ -60,7 +60,7 @@
                             class="form-input" 
                             placeholder="Enter your full name" 
                             required>
-                        <span class="field-icon">👤</span>
+                        <span class="field-icon"><i data-lucide="user"></i></span>
                     </div>
 
                     <div class="form-group has-icon">
@@ -72,7 +72,7 @@
                             class="form-input" 
                             placeholder="Enter your email address" 
                             required>
-                        <span class="field-icon">📧</span>
+                        <span class="field-icon"><i data-lucide="mail"></i></span>
                     </div>
 
                     <!-- Item Information -->
@@ -85,7 +85,7 @@
                             class="form-input" 
                             placeholder="e.g., Black Backpack, iPhone 14, Car Keys" 
                             required>
-                        <span class="field-icon">📦</span>
+                        <span class="field-icon"><i data-lucide="package"></i></span>
                     </div>
 
                     <div class="form-group">
@@ -124,7 +124,7 @@
                                 class="form-input" 
                                 placeholder="e.g., Library 3rd Floor, Student Center" 
                                 required>
-                            <span class="field-icon">📍</span>
+                            <span class="field-icon"><i data-lucide="map-pin"></i></span>
                         </div>
 
                         <div class="form-group has-icon">
@@ -135,7 +135,7 @@
                                 name="date" 
                                 class="form-input" 
                                 required>
-                            <span class="field-icon">📅</span>
+                            <span class="field-icon"><i data-lucide="calendar"></i></span>
                         </div>
                     </div>
 
@@ -146,7 +146,7 @@
                             id="time" 
                             name="time" 
                             class="form-input">
-                        <span class="field-icon">🕐</span>
+                        <span class="field-icon"><i data-lucide="clock"></i></span>
                     </div>
 
                     <!-- Description -->
@@ -172,7 +172,7 @@
                                 class="file-input" 
                                 accept="image/*">
                             <label for="photo" class="file-upload-label">
-                                <span class="upload-icon">📷</span>
+                                <span class="upload-icon"><i data-lucide="camera"></i></span>
                                 <span class="upload-text">Choose Image</span>
                             </label>
                             <div class="file-info" id="fileInfo"></div>
@@ -197,13 +197,13 @@
                             name="phone" 
                             class="form-input" 
                             placeholder="Enter your phone number">
-                        <span class="field-icon">📞</span>
+                        <span class="field-icon"><i data-lucide="phone"></i></span>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="form-group">
                         <button type="submit" class="submit-btn">
-                            <span class="btn-icon">📋</span>
+                            <span class="btn-icon"><i data-lucide="clipboard-list"></i></span>
                             Submit Report
                         </button>
                     </div>
@@ -223,7 +223,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <span class="footer-logo-icon">🔍</span>
+                        <span class="footer-logo-icon"><i data-lucide="search"></i></span>
                         <span class="footer-logo-text">Campus Lost & Found</span>
                     </div>
                     <p class="footer-description">
@@ -254,10 +254,10 @@
                 <div class="footer-section">
                     <h4 class="footer-title">Contact Info</h4>
                     <div class="footer-contact">
-                        <p>📧 admin@campus.edu</p>
-                        <p>📞 (555) 123-4567</p>
-                        <p>📍 Campus Security Office</p>
-                        <p>🕒 Mon-Fri, 8AM-6PM</p>
+                        <p><i data-lucide="mail" class="icon"></i> admin@campus.edu</p>
+                        <p><i data-lucide="phone" class="icon"></i> (555) 123-4567</p>
+                        <p><i data-lucide="map-pin" class="icon"></i> Campus Security Office</p>
+                        <p><i data-lucide="clock" class="icon"></i> Mon-Fri, 8AM-6PM</p>
                     </div>
                 </div>
             </div>
@@ -268,7 +268,9 @@
         </div>
     </footer>
     
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/ui.js"></script>
 </body>
 </html>

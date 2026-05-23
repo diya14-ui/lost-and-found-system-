@@ -276,13 +276,14 @@ document.addEventListener('DOMContentLoaded', function() {
             itemTypeSelect.value = 'lost';
             if (postPageTitle) postPageTitle.textContent = 'Report Lost Item';
             if (postPageSubtitle) postPageSubtitle.textContent = 'Fill in the details below to report an item you lost on campus.';
-            if (submitBtn) submitBtn.innerHTML = '<span class="btn-icon">📋</span> Submit Lost Report';
+            if (submitBtn) submitBtn.innerHTML = '<span class="btn-icon"><i data-lucide="clipboard-list"></i></span> Submit Lost Report';
         } else if (type === 'found') {
             itemTypeSelect.value = 'found';
             if (postPageTitle) postPageTitle.textContent = 'Report Found Item';
             if (postPageSubtitle) postPageSubtitle.textContent = 'Fill in the details below to report an item you found on campus.';
-            if (submitBtn) submitBtn.innerHTML = '<span class="btn-icon">📋</span> Submit Found Report';
+            if (submitBtn) submitBtn.innerHTML = '<span class="btn-icon"><i data-lucide="clipboard-list"></i></span> Submit Found Report';
         }
+        if (window.__lfRefreshIcons) window.__lfRefreshIcons();
     }
 });
 
@@ -340,16 +341,20 @@ document.addEventListener('DOMContentLoaded', function() {
             .replace(/'/g, '&#39;');
     }
 
-    function getItemEmoji(category) {
+    function getItemIconName(category) {
         const categoryMap = {
-            electronics: '📱',
-            clothing: '👕',
-            accessories: '🕶️',
-            documents: '📄',
-            bags: '🎒',
-            keys: '🔑'
+            electronics: 'smartphone',
+            clothing: 'shirt',
+            accessories: 'glasses',
+            documents: 'file-text',
+            bags: 'backpack',
+            keys: 'key-round'
         };
-        return categoryMap[(category || '').toLowerCase()] || '📦';
+        return categoryMap[(category || '').toLowerCase()] || 'package';
+    }
+
+    function getItemIconHtml(category) {
+        return `<i data-lucide="${getItemIconName(category)}"></i>`;
     }
 
     function getApiOrigin() {
@@ -399,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function renderItemCard(item) {
         const normalizedStatus = (item.status || '').toLowerCase();
-        const itemEmoji = getItemEmoji(item.category);
+        const itemIconHtml = getItemIconHtml(item.category);
         const imageUrl = resolveImageUrl(item.image_url);
         const statusClass = itemType === 'found'
             ? (normalizedStatus === 'resolved' ? 'claimed' : (normalizedStatus === 'pending' ? 'pending' : 'available'))
@@ -413,13 +418,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="${itemType}-item-card">
                 <div class="item-image-container">
                     ${imageUrl ? `<img class="item-photo" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(item.item_name || 'Item photo')}" loading="lazy" onerror="this.remove(); this.parentElement.querySelector('.item-placeholder-image').classList.remove('hidden-fallback');">` : ''}
-                    <div class="item-placeholder-image ${imageUrl ? 'hidden-fallback' : ''}">${itemEmoji}</div>
+                    <div class="item-placeholder-image ${imageUrl ? 'hidden-fallback' : ''}">${itemIconHtml}</div>
                     <span class="${itemType === 'found' ? 'item-status' : 'item-urgency'} ${statusClass}">${escapeHtml(statusText)}</span>
                 </div>
                 <div class="item-details">
                     <h3 class="item-name">${escapeHtml(item.item_name || 'Unnamed Item')}</h3>
-                    <p class="item-location">📍 ${escapeHtml(item.location_text || 'Location not provided')}</p>
-                    <p class="item-date">🕐 ${escapeHtml(getDateLabel(item.date_value))}</p>
+                    <p class="item-location"><i data-lucide="map-pin" class="icon"></i> ${escapeHtml(item.location_text || 'Location not provided')}</p>
+                    <p class="item-date"><i data-lucide="clock" class="icon"></i> ${escapeHtml(getDateLabel(item.date_value))}</p>
                     <p class="item-description">${escapeHtml(item.description_text || 'No description provided.')}</p>
                     <button class="view-details-btn" data-item-id="${item.id}">View Details</button>
                 </div>
@@ -487,6 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
         itemsGrid.innerHTML = filtered.map(renderItemCard).join('');
         itemsCount.textContent = `Showing ${filtered.length} of ${allItems.length} ${itemType} items`;
         loadInfo.textContent = `Showing ${filtered.length} items`;
+        if (window.__lfRefreshIcons) window.__lfRefreshIcons();
     }
 
     function scrollToResults() {

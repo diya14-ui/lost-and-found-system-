@@ -3274,3 +3274,177 @@ body {
     }
 }
 
+/* =========================================================
+   Icon system (Lucide) + minimal UI cleanup
+   ========================================================= */
+
+/* Lucide renders inline <svg>. These rules make every icon inherit
+   the current text color and sit on the baseline like a glyph would. */
+[data-lucide],
+.icon {
+    width: 1.05em;
+    height: 1.05em;
+    stroke-width: 1.75;
+    vertical-align: -0.18em;
+    flex-shrink: 0;
+}
+
+.icon-sm { width: 14px; height: 14px; }
+.icon-md { width: 18px; height: 18px; }
+.icon-lg { width: 22px; height: 22px; }
+.icon-xl { width: 32px; height: 32px; }
+
+/* Logo mark gets a fixed visual weight regardless of font-size context. */
+.logo-icon,
+.footer-logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-icon svg,
+.logo-icon [data-lucide] {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+}
+
+.footer-logo-icon svg,
+.footer-logo-icon [data-lucide] {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2;
+}
+
+/* Field-, detail-, faq-, summary-, search-, btn-, contact-, meta-,
+   label-, upload-, file-, status-, add-icon — all share the same
+   minimal sizing so the layout stays consistent across pages. */
+.detail-icon svg,
+.detail-icon [data-lucide],
+.field-icon svg,
+.field-icon [data-lucide],
+.faq-icon svg,
+.faq-icon [data-lucide],
+.contact-icon svg,
+.contact-icon [data-lucide],
+.meta-icon svg,
+.meta-icon [data-lucide],
+.label-icon svg,
+.label-icon [data-lucide],
+.upload-icon svg,
+.upload-icon [data-lucide],
+.file-icon svg,
+.file-icon [data-lucide],
+.status-icon svg,
+.status-icon [data-lucide],
+.add-icon svg,
+.add-icon [data-lucide],
+.search-icon svg,
+.search-icon [data-lucide] {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+}
+
+.btn-icon svg,
+.btn-icon [data-lucide] {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+    vertical-align: -0.22em;
+}
+
+.summary-icon svg,
+.summary-icon [data-lucide] {
+    width: 28px;
+    height: 28px;
+    stroke-width: 1.8;
+}
+
+/* Step illustrations on the home page */
+.step-icon .icon svg,
+.step-icon .icon [data-lucide] {
+    width: 28px;
+    height: 28px;
+    stroke-width: 1.75;
+}
+
+/* Item-placeholder and similar-item-image previously held a single
+   big emoji. Center the SVG and give it breathing room. */
+.item-placeholder svg,
+.item-placeholder [data-lucide],
+.placeholder-image svg,
+.placeholder-image [data-lucide],
+.item-placeholder-image svg,
+.item-placeholder-image [data-lucide],
+.similar-item-image svg,
+.similar-item-image [data-lucide],
+.item-preview-image svg,
+.item-preview-image [data-lucide] {
+    width: 56px;
+    height: 56px;
+    stroke-width: 1.5;
+    color: #94a3b8;
+}
+
+/* Unified navbar-right buttons: same height, same gap between icon+label */
+.navbar-right .btn-report,
+.navbar-right .btn-auth,
+.navbar-right .btn-logout {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    line-height: 1;
+}
+
+.navbar-right .btn-report svg,
+.navbar-right .btn-auth svg,
+.navbar-right .btn-logout svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2;
+}
+
+/* Logout button: matches the .btn-auth outline style but tinted to
+   make destructive intent obvious without screaming. */
+.btn-logout {
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.btn-logout:hover {
+    background: #ffffff;
+    color: #be123c;
+    border-color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Small visual fixes that smooth over inconsistencies between pages
+   without touching the existing colour identity. */
+.search-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-location,
+.item-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* Hide a stray sliding-underline ::after pseudo glyph that was an emoji */
+.profile-avatar::after {
+    content: '' !important;
+}
+
