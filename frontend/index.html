@@ -338,7 +338,7 @@
                 const iconHtml = `<i data-lucide="${iconName}"></i>`;
                 const imageUrl = resolveImageUrl(item.image_url);
                 const itemType = (item.item_type || '').toLowerCase() === 'found' ? 'found' : 'lost';
-                const detailsUrl = `../item-detail.html?id=${item.id}`;
+                const detailsUrl = `item-detail.html?id=${item.id}`;
 
                 return `
                     <a class="item-card" href="${detailsUrl}" style="text-decoration:none; color:inherit; display:block;">

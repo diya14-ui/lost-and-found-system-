@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Details - Campus Lost & Found</title>
-    <link rel="stylesheet" href="frontend/css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="item-detail-page">
         <!-- Navigation Bar -->
         <nav class="navbar">
             <div class="navbar-left">
-                <a href="frontend/index.html" class="logo">
-                    <span class="logo-icon"><i data-lucide="search"></i></span>
+                <a href="index.html" class="logo">
+                    <span class="logo-icon">🔍</span>
                     <span class="logo-text">Campus Lost & Found</span>
                 </a>
             </div>
             <div class="navbar-center">
                 <ul class="nav-links">
-                    <li><a href="frontend/index.html">Home</a></li>
-                    <li><a href="frontend/lost.html">Lost Items</a></li>
-                    <li><a href="frontend/found.html">Found Items</a></li>
-                    <li><a href="frontend/profile.html">Profile</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="lost.html">Lost Items</a></li>
+                    <li><a href="found.html">Found Items</a></li>
+                    <li><a href="profile.html">Profile</a></li>
                 </ul>
             </div>
             <div class="navbar-right">
-                <a href="frontend/login.html" class="btn-auth">Login</a>
+                <a href="login.html" class="btn-auth">Login</a>
             </div>
         </nav>
 
@@ -33,7 +33,7 @@
         <section class="item-detail-hero">
             <div class="hero-container">
                 <div class="breadcrumb">
-                    <a href="frontend/found.html" id="backLink">← Back to Found Items</a>
+                    <a href="found.html" id="backLink">← Back to Found Items</a>
                 </div>
                 <h1 class="item-detail-title">Item Details</h1>
                 <p class="item-detail-subtitle">View complete information about this item</p>
@@ -49,7 +49,7 @@
                         <div class="item-image-container">
                             <div class="item-image" id="itemImageFrame">
                                 <img id="itemImage" class="item-detail-photo" alt="Uploaded item photo" style="display: none;">
-                                <span class="item-placeholder" id="itemPlaceholder"><i data-lucide="package"></i></span>
+                                <span class="item-placeholder" id="itemPlaceholder">📦</span>
                             </div>
                             <div class="image-gallery" id="imageGallery" style="display: none;"></div>
                         </div>
@@ -58,7 +58,7 @@
                     <!-- Right Side - Details -->
                     <div class="item-info-section">
                         <div class="item-status-badge found-badge" id="itemStatusBadge">
-                            <span class="status-icon" id="statusIcon"><i data-lucide="check-circle-2"></i></span>
+                            <span class="status-icon" id="statusIcon">✅</span>
                             <span id="statusText">Loading...</span>
                         </div>
 
@@ -67,7 +67,7 @@
                         <div class="item-details-grid">
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon"><i data-lucide="tag"></i></span>
+                                    <span class="detail-icon">🏷️</span>
                                     Category
                                 </div>
                                 <div class="detail-value" id="itemCategory">-</div>
@@ -75,7 +75,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon"><i data-lucide="calendar"></i></span>
+                                    <span class="detail-icon">📅</span>
                                     Date
                                 </div>
                                 <div class="detail-value" id="itemDate">-</div>
@@ -83,7 +83,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon"><i data-lucide="clock"></i></span>
+                                    <span class="detail-icon">🕐</span>
                                     Time
                                 </div>
                                 <div class="detail-value" id="itemTime">-</div>
@@ -91,7 +91,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon"><i data-lucide="map-pin"></i></span>
+                                    <span class="detail-icon">📍</span>
                                     Location
                                 </div>
                                 <div class="detail-value" id="itemLocation">-</div>
@@ -99,7 +99,7 @@
 
                             <div class="detail-row description-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon"><i data-lucide="file-text"></i></span>
+                                    <span class="detail-icon">📝</span>
                                     Description
                                 </div>
                                 <div class="detail-value description-text" id="itemDescription">-</div>
@@ -107,7 +107,7 @@
 
                             <div class="detail-row">
                                 <div class="detail-label">
-                                    <span class="detail-icon"><i data-lucide="user"></i></span>
+                                    <span class="detail-icon">👤</span>
                                     Posted By
                                 </div>
                                 <div class="detail-value posted-by">
@@ -125,11 +125,11 @@
                         <!-- Action Buttons -->
                         <div class="item-actions">
                             <button class="claim-btn primary-btn" id="claimBtn" type="button">
-                                <span class="btn-icon"><i data-lucide="handshake"></i></span>
+                                <span class="btn-icon">🤝</span>
                                 Claim This Item
                             </button>
                             <button class="contact-btn secondary-btn" id="contactBtn" type="button">
-                                <span class="btn-icon"><i data-lucide="message-square"></i></span>
+                                <span class="btn-icon">💬</span>
                                 Contact Poster
                             </button>
                         </div>
@@ -157,21 +157,21 @@
                 <h3 class="similar-title">Item Metadata</h3>
                 <div class="similar-grid">
                     <div class="similar-item-card">
-                        <div class="similar-item-image"><i data-lucide="badge"></i></div>
+                        <div class="similar-item-image">🆔</div>
                         <div class="similar-item-info">
                             <h4>Item ID</h4>
                             <p id="metaItemId">-</p>
                         </div>
                     </div>
                     <div class="similar-item-card">
-                        <div class="similar-item-image"><i data-lucide="pin"></i></div>
+                        <div class="similar-item-image">📌</div>
                         <div class="similar-item-info">
                             <h4>Status</h4>
                             <p id="metaStatus">-</p>
                         </div>
                     </div>
                     <div class="similar-item-card">
-                        <div class="similar-item-image"><i data-lucide="calendar-clock"></i></div>
+                        <div class="similar-item-image">📤</div>
                         <div class="similar-item-info">
                             <h4>Posted On</h4>
                             <p id="metaCreatedAt">-</p>
@@ -182,10 +182,8 @@
         </section>
     </div>
 
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    <script src="frontend/js/api.js"></script>
-    <script src="frontend/js/app.js"></script>
-    <script src="frontend/js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
     <style>
         /* Contact modal */
         .contact-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(2,6,23,0.5); z-index: 9999 }
@@ -193,6 +191,7 @@
         .contact-modal h3 { margin:0 0 0.6rem }
         .contact-modal label { display:block; margin-top:0.5rem; font-weight:600 }
         .contact-modal input, .contact-modal textarea { width:100%; padding:0.6rem; border-radius:8px; border:1px solid #e6e7eb }
+        .contact-modal textarea { min-height:120px }
         .contact-modal .actions { display:flex; gap:0.6rem; justify-content:flex-end; margin-top:0.6rem }
         .contact-modal .btn { padding:0.6rem 0.9rem; border-radius:8px; border:none; cursor:pointer }
         .contact-modal .btn.cancel { background:#e6e7eb }
@@ -279,13 +278,12 @@
 
             function updateTypeUi(itemType, status) {
                 const isFound = itemType === 'found';
-                backLink.href = isFound ? 'frontend/found.html' : 'frontend/lost.html';
+                backLink.href = isFound ? 'found.html' : 'lost.html';
                 backLink.textContent = isFound ? '← Back to Found Items' : '← Back to Lost Items';
 
                 statusBadge.classList.remove('found-badge', 'lost-badge');
                 statusBadge.classList.add(isFound ? 'found-badge' : 'lost-badge');
-                statusIcon.innerHTML = `<i data-lucide="${isFound ? 'check-circle-2' : 'search'}"></i>`;
-                if (window.__lfRefreshIcons) window.__lfRefreshIcons();
+                statusIcon.textContent = isFound ? '✅' : '🔎';
                 statusText.textContent = isFound ? 'Found Item' : 'Lost Item';
 
                 claimBtn.textContent = isFound ? 'Claim This Item' : 'I Found This Item';
@@ -293,7 +291,7 @@
                     if (isFound) {
                         window.location.href = `claim.html?itemId=${itemId}`;
                     } else {
-                        window.location.href = 'frontend/post.html?type=found';
+                        window.location.href = `post.html?type=found`;
                     }
                 };
 
@@ -421,6 +419,7 @@
                     });
 
                     contactBtn.disabled = false;
+
                 } catch (error) {
                     nameEl.textContent = 'Unable to load item details';
                     descriptionEl.textContent = error.message || 'Something went wrong while loading this item.';
