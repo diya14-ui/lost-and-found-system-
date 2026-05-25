@@ -108,8 +108,8 @@ def signup():
             return jsonify({"success": False, "message": "Invalid profile photo format. Allowed: png, jpg, jpeg, gif, webp, bmp, jfif, avif"}), 400
 
         cursor.execute(
-            "INSERT INTO users (name, email, student_id, department, password_hash, profile_image_url) VALUES (%s, %s, %s, %s, %s, %s)",
-            (name, email, student_id, department, password_hash, profile_image_url),
+            "INSERT INTO users (name, email, student_id, department, password_hash, profile_image_url, is_admin, role) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            (name, email, student_id, department, password_hash, profile_image_url, 0, "student"),
         )
         conn.commit()
         user_id = cursor.lastrowid
@@ -132,6 +132,8 @@ def signup():
                     "studentId": student_id,
                     "department": department,
                     "profileImageUrl": profile_image_url,
+                    "is_admin": False,
+                    "role": "student",
                 },
             },
         }
@@ -151,7 +153,7 @@ def login():
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute(
-            "SELECT id, name, email, student_id, department, profile_image_url, password_hash FROM users WHERE email = %s LIMIT 1",
+            "SELECT id, name, email, student_id, department, profile_image_url, password_hash, is_admin, role FROM users WHERE email = %s LIMIT 1",
             (email,),
         )
         user = cursor.fetchone()
@@ -163,7 +165,8 @@ def login():
     if not user or not verify_password(password, user["password_hash"]):
         return jsonify({"success": False, "message": "Invalid credentials"}), 401
 
-    token = generate_token({"id": user["id"], "email": user["email"]})
+    role = user.get("role") or ("admin" if bool(user.get("is_admin")) else "student")
+    token = generate_token({"id": user["id"], "email": user["email"], "role": role})
     return jsonify(
         {
             "success": True,
@@ -177,6 +180,8 @@ def login():
                     "studentId": user["student_id"],
                     "department": user["department"],
                     "profileImageUrl": user.get("profile_image_url"),
+                    "is_admin": bool(user.get("is_admin")),
+                    "role": role,
                 },
             },
         }

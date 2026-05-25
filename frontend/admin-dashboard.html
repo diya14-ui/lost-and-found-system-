@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard - Campus Lost & Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-dashboard-page">
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-grid"></div>
+
+  <div class="admin-shell">
+    <aside class="sidebar glass-card">
+      <div class="sidebar-brand">
+        <div class="brand-badge small"><i data-lucide="shield-check"></i></div>
+        <div>
+          <h2>Campus Admin</h2>
+          <p>Moderation Center</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-link active"><i data-lucide="layout-dashboard"></i><span>Dashboard</span></a>
+        <a href="#items" class="nav-link"><i data-lucide="package-search"></i><span>Manage Items</span></a>
+        <a href="#claims" class="nav-link"><i data-lucide="badge-alert"></i><span>Claims</span></a>
+        <a href="#users" class="nav-link"><i data-lucide="users"></i><span>Users</span></a>
+        <a href="#reports" class="nav-link"><i data-lucide="message-square-warning"></i><span>Reports</span></a>
+        <a href="#notifications" class="nav-link"><i data-lucide="bell-ring"></i><span>Notifications</span></a>
+        <a href="#settings" class="nav-link"><i data-lucide="settings-2"></i><span>Settings</span></a>
+      </nav>
+
+      <button id="btnLogout" class="sidebar-logout">
+        <i data-lucide="log-out"></i>
+        <span>Logout</span>
+      </button>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar glass-card">
+        <div>
+          <span class="section-label">Admin Dashboard</span>
+          <h1>Overview & Moderation</h1>
+        </div>
+        <div class="topbar-actions">
+          <div class="search-wrap">
+            <i data-lucide="search"></i>
+            <input id="globalSearch" type="search" placeholder="Search items, claims, users...">
+          </div>
+          <button id="btnReload" class="secondary-btn">Refresh</button>
+        </div>
+      </header>
+
+      <section id="dashboard" class="content-section">
+        <div class="stats-grid">
+          <article class="stat-card glass-card"><span>Total Items</span><strong id="statTotalItems">0</strong><i data-lucide="package"></i></article>
+          <article class="stat-card glass-card"><span>Total Users</span><strong id="statUsers">0</strong><i data-lucide="users"></i></article>
+          <article class="stat-card glass-card"><span>Pending Items</span><strong id="statPendingItems">0</strong><i data-lucide="hourglass"></i></article>
+          <article class="stat-card glass-card"><span>Approved Items</span><strong id="statApprovedItems">0</strong><i data-lucide="check-check"></i></article>
+          <article class="stat-card glass-card"><span>Rejected Items</span><strong id="statRejectedItems">0</strong><i data-lucide="shield-alert"></i></article>
+          <article class="stat-card glass-card"><span>Claims Pending</span><strong id="statPendingClaims">0</strong><i data-lucide="badge-alert"></i></article>
+          <article class="stat-card glass-card"><span>Resolved Items</span><strong id="statResolvedItems">0</strong><i data-lucide="check-circle-2"></i></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel glass-card">
+            <div class="panel-head">
+              <div>
+                <span class="section-label">Activity</span>
+                <h3>Moderation trend</h3>
+              </div>
+              <span class="pill">Live snapshot</span>
+            </div>
+            <div id="miniChart" class="chart-bars" aria-label="Moderation analytics chart"></div>
+          </section>
+
+          <section class="panel glass-card">
+            <div class="panel-head">
+              <div>
+                <span class="section-label">Recent Activity</span>
+                <h3>Latest moderation events</h3>
+              </div>
+            </div>
+            <div id="activityFeed" class="activity-feed"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="items" class="content-section hidden">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Manage Items</span>
+              <h3>Pending approvals & item moderation</h3>
+            </div>
+            <div class="panel-actions">
+              <select id="filterApproval" class="field-select">
+                <option value="all">All items</option>
+                <option value="0">Pending approval</option>
+                <option value="1">Approved</option>
+              </select>
+              <button id="refreshItems" class="secondary-btn">Refresh</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table id="itemsTable" class="data-table">
+              <thead>
+                <tr><th>ID</th><th>Type</th><th>Name</th><th>Reporter</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="claims" class="content-section hidden">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Claims</span>
+              <h3>Approve or reject claim requests</h3>
+            </div>
+            <button id="refreshClaims" class="secondary-btn">Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table id="claimsTable" class="data-table">
+              <thead>
+                <tr><th>ID</th><th>Item</th><th>Claimant</th><th>Contact</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="users" class="content-section hidden">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Users</span>
+              <h3>Registered users & account actions</h3>
+            </div>
+            <button id="refreshUsers" class="secondary-btn">Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table id="usersTable" class="data-table">
+              <thead>
+                <tr><th>ID</th><th>Name</th><th>Email</th><th>Student ID</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="reports" class="content-section hidden">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Reports</span>
+              <h3>Moderation reports and flags</h3>
+            </div>
+          </div>
+          <div id="reportsList" class="activity-feed"></div>
+        </div>
+      </section>
+
+      <section id="notifications" class="content-section hidden">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Notifications</span>
+              <h3>Recent system notifications</h3>
+            </div>
+          </div>
+          <div id="notificationList" class="activity-feed"></div>
+        </div>
+      </section>
+
+      <section id="settings" class="content-section hidden">
+        <div class="panel glass-card">
+          <div class="panel-head">
+            <div>
+              <span class="section-label">Settings</span>
+              <h3>Admin tools and preferences</h3>
+            </div>
+          </div>
+          <p class="panel-copy">Manage moderation settings, notification preferences, and dashboard behavior from here.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/api.js?v=20260525a"></script>
+  <script src="js/admin.js?v=20260525d"></script>
+</body>
+</html>

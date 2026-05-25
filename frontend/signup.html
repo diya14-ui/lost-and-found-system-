@@ -167,9 +167,6 @@
             }
 
             setAuthSession(result.data);
-            if (result.data && result.data.user && result.data.user.profileImageUrl) {
-                localStorage.setItem('profileImageUrl', result.data.user.profileImageUrl);
-            }
             showStatus('Account created successfully. Redirecting...', 'success');
             setTimeout(() => {
                 window.location.href = 'profile.html';

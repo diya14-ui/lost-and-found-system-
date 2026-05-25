@@ -354,6 +354,8 @@
             text-align: left;
         }
 
+        /* admin badge removed */
+
         .student-name {
             font-size: 2.5rem;
             font-weight: 700;
@@ -859,9 +861,9 @@
         function getStoredProfileImageUrl() {
             try {
                 const storedUser = JSON.parse(localStorage.getItem('authUser') || '{}');
-                return storedUser.profileImageUrl || localStorage.getItem('profileImageUrl') || '';
+                return storedUser.profileImageUrl || '';
             } catch (error) {
-                return localStorage.getItem('profileImageUrl') || '';
+                return '';
             }
         }
 
@@ -941,7 +943,7 @@
                 profileStudentId.textContent = `Student ID: ${user.student_id || 'Not set'}`;
                 profileDepartment.textContent = `Department: ${user.department || 'Not provided'}`;
 
-                const profileImageUrl = user.profile_image_url || user.profileImageUrl || getStoredProfileImageUrl();
+                const profileImageUrl = user.profile_image_url || user.profileImageUrl || '';
                 const imageUrl = resolveProfileImageUrl(profileImageUrl);
                 currentProfileImageUrl = imageUrl;
 
@@ -959,14 +961,19 @@
                     profilePhotoHint.textContent = 'No profile photo uploaded yet.';
                 }
 
-                localStorage.setItem('authUser', JSON.stringify({
+                const authUser = {
                     id: user.id,
                     name: user.name,
                     email: user.email,
                     studentId: user.student_id,
                     department: user.department,
-                    profileImageUrl: profileImageUrl || null
-                }));
+                    profileImageUrl: profileImageUrl || null,
+                    is_admin: Boolean(user.is_admin)
+                };
+                localStorage.setItem('authUser', JSON.stringify(authUser));
+
+                // leave personal dashboard buttons visible (admin features removed)
+                const dashboardButtons = document.querySelector('.button-row');
 
                 if (statsRes.ok && statsResult.success) {
                     lostCount.textContent = String(statsResult.data.lostItemsFiled ?? 0);

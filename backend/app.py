@@ -7,11 +7,16 @@ from py_backend.routes.item_routes import item_bp
 from py_backend.routes.claim_routes import claim_bp
 from py_backend.routes.user_routes import user_bp
 from py_backend.routes.contact_routes import contact_bp
+from py_backend.routes.admin_routes import admin_bp
+from py_backend.utils.schema import ensure_admin_columns
 import os
 
 
 def create_app() -> Flask:
     app = Flask(__name__)
+    backend_dir = os.path.dirname(__file__)
+    workspace_dir = os.path.abspath(os.path.join(backend_dir, ".."))
+    frontend_dir = os.path.join(workspace_dir, "frontend")
     uploads_dir = os.path.join(os.path.dirname(__file__), "uploads")
     os.makedirs(uploads_dir, exist_ok=True)
 
@@ -32,11 +37,44 @@ def create_app() -> Flask:
     def uploaded_file(filename: str):
         return send_from_directory(uploads_dir, filename)
 
+    @app.get("/")
+    def root_page():
+        return send_from_directory(frontend_dir, "index.html")
+
+    @app.get("/frontend/<path:filename>")
+    def frontend_files(filename: str):
+        return send_from_directory(frontend_dir, filename)
+
+    @app.get("/admin/login")
+    def admin_login_page():
+        return send_from_directory(frontend_dir, "admin-login.html")
+
+    @app.get("/admin/dashboard")
+    def admin_dashboard_page():
+        return send_from_directory(frontend_dir, "admin-dashboard.html")
+
+    @app.get("/admin/index.html")
+    def admin_index_page():
+        return send_from_directory(frontend_dir, "index.html")
+
+    @app.get("/admin/css/<path:filename>")
+    def admin_css_files(filename: str):
+        return send_from_directory(os.path.join(frontend_dir, "css"), filename)
+
+    @app.get("/admin/js/<path:filename>")
+    def admin_js_files(filename: str):
+        return send_from_directory(os.path.join(frontend_dir, "js"), filename)
+
+    @app.get("/admin/images/<path:filename>")
+    def admin_image_files(filename: str):
+        return send_from_directory(os.path.join(frontend_dir, "images"), filename)
+
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(item_bp, url_prefix="/api/items")
     app.register_blueprint(claim_bp, url_prefix="/api/claims")
     app.register_blueprint(user_bp, url_prefix="/api/users")
     app.register_blueprint(contact_bp, url_prefix="/api/contact")
+    app.register_blueprint(admin_bp, url_prefix="/api/admin")
 
     return app
 
@@ -46,6 +84,7 @@ app = create_app()
 if __name__ == "__main__":
     try:
         test_connection()
+        ensure_admin_columns()
         print("Database connection successful.")
     except Exception as error:
         # Keep API running so frontend gets a proper JSON error instead of connection refusal.

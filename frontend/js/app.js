@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const itemId = detailsButton.getAttribute('data-item-id');
             if (itemId) {
-                window.location.href = `../item-detail.html?id=${itemId}`;
+                window.location.href = `item-detail.html?id=${itemId}`;
             }
         });
     }

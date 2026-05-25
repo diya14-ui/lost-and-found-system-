@@ -70,8 +70,14 @@ def get_items():
     search = request.args.get("search")
     category = request.args.get("category")
     location = request.args.get("location")
-    limit = int(request.args.get("limit", 20))
-    offset = int(request.args.get("offset", 0))
+    try:
+        limit = int(request.args.get("limit", 20))
+        offset = int(request.args.get("offset", 0))
+    except (TypeError, ValueError):
+        return jsonify({"success": False, "message": "limit and offset must be numbers"}), 400
+
+    limit = max(1, min(limit, 100))
+    offset = max(0, offset)
 
     conditions = []
     values = []
@@ -92,11 +98,14 @@ def get_items():
         conditions.append("location_text LIKE %s")
         values.append(f"%{location}%")
 
+    conditions.append("COALESCE(is_approved, 0) = 1")
+    conditions.append("status IN ('approved', 'resolved')")
+
     where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
 
     sql = f"""
         SELECT id, reporter_name, reporter_email, item_name, item_type, category, location_text, date_value,
-               time_value, description_text, image_url, contact_method, phone, status, created_at
+             time_value, description_text, image_url, contact_method, phone, status, created_at
         FROM items
         {where_clause}
         ORDER BY created_at DESC
@@ -104,12 +113,15 @@ def get_items():
     """
     values.extend([limit, offset])
 
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(sql, tuple(values))
-    rows = cursor.fetchall()
-    cursor.close()
-    conn.close()
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(sql, tuple(values))
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+    except Exception:
+        return jsonify({"success": False, "message": "Database is not available right now. Please try again."}), 503
 
     serialized_rows = [_serialize_item_row(row) for row in rows]
     return jsonify({"success": True, "data": serialized_rows})
@@ -117,21 +129,26 @@ def get_items():
 
 @item_bp.get("/<int:item_id>")
 def get_item_by_id(item_id: int):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(
-        """
-        SELECT id, reporter_name, reporter_email, item_name, item_type, category, location_text, date_value,
-               time_value, description_text, image_url, contact_method, phone, status, created_at
-        FROM items
-        WHERE id = %s
-        LIMIT 1
-        """,
-        (item_id,),
-    )
-    row = cursor.fetchone()
-    cursor.close()
-    conn.close()
+    try:
+        conn = get_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute(
+            """
+            SELECT id, reporter_name, reporter_email, item_name, item_type, category, location_text, date_value,
+                   time_value, description_text, image_url, contact_method, phone, status, created_at
+            FROM items
+              WHERE id = %s
+                  AND COALESCE(is_approved, 0) = 1
+                  AND status IN ('approved', 'resolved')
+            LIMIT 1
+            """,
+            (item_id,),
+        )
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+    except Exception:
+        return jsonify({"success": False, "message": "Database is not available right now. Please try again."}), 503
 
     if not row:
         return jsonify({"success": False, "message": "Item not found"}), 404
@@ -167,34 +184,39 @@ def create_item():
 
     posted_by_user_id = g.user.get("id")
 
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        """
-        INSERT INTO items
-        (reporter_name, reporter_email, item_name, item_type, category, location_text, date_value, time_value,
-         description_text, image_url, contact_method, phone, posted_by_user_id)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """,
-        (
-            reporter_name,
-            reporter_email,
-            item_name,
-            item_type,
-            category,
-            location,
-            date_value,
-            time_value,
-            description,
-            image_url,
-            contact_method,
-            phone,
-            posted_by_user_id,
-        ),
-    )
-    conn.commit()
-    new_id = cursor.lastrowid
-    cursor.close()
-    conn.close()
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            INSERT INTO items
+            (reporter_name, reporter_email, item_name, item_type, category, location_text, date_value, time_value,
+             description_text, image_url, contact_method, phone, posted_by_user_id, status, is_approved)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """,
+            (
+                reporter_name,
+                reporter_email,
+                item_name,
+                item_type,
+                category,
+                location,
+                date_value,
+                time_value,
+                description,
+                image_url,
+                contact_method,
+                phone,
+                posted_by_user_id,
+                "pending",
+                0,
+            ),
+        )
+        conn.commit()
+        new_id = cursor.lastrowid
+        cursor.close()
+        conn.close()
+    except Exception:
+        return jsonify({"success": False, "message": "Database is not available right now. Please try again."}), 503
 
     return jsonify({"success": True, "message": "Item report created", "data": {"id": new_id}}), 201

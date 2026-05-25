@@ -9,6 +9,9 @@ CREATE TABLE IF NOT EXISTS users (
   department VARCHAR(100) DEFAULT NULL,
   password_hash VARCHAR(255) NOT NULL,
   profile_image_url VARCHAR(255) DEFAULT NULL,
+  is_admin TINYINT(1) NOT NULL DEFAULT 0,
+  role ENUM('student', 'admin') NOT NULL DEFAULT 'student',
+  is_banned TINYINT(1) NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -27,7 +30,8 @@ CREATE TABLE IF NOT EXISTS items (
   image_url VARCHAR(255) DEFAULT NULL,
   contact_method ENUM('email', 'phone', 'both') DEFAULT 'email',
   phone VARCHAR(30) DEFAULT NULL,
-  status ENUM('open', 'pending', 'resolved') DEFAULT 'open',
+  status ENUM('pending', 'approved', 'rejected', 'resolved') NOT NULL DEFAULT 'pending',
+  is_approved TINYINT(1) NOT NULL DEFAULT 0,
   posted_by_user_id INT DEFAULT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

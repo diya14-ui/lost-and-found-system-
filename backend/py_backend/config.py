@@ -20,3 +20,5 @@ class Config:
     SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
     SMTP_FROM = os.getenv("SMTP_FROM", "no-reply@example.com")
     SMTP_USE_TLS = os.getenv("SMTP_USE_TLS", "true").lower() in ("1", "true", "yes")
+    DB_POOL_SIZE = int(os.getenv("DB_POOL_SIZE", "15"))
+    DB_CONN_TIMEOUT = int(os.getenv("DB_CONN_TIMEOUT", "10"))

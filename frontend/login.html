@@ -88,8 +88,9 @@
                 setAuthSession(result.data);
                 localStorage.setItem('userLoggedIn', 'true');
                 showStatus('Login successful. Redirecting...', 'success');
+                const nextPage = 'profile.html';
                 setTimeout(() => {
-                    window.location.href = 'profile.html';
+                    window.location.href = nextPage;
                 }, 350);
             } catch (error) {
                 showStatus('Could not connect to backend. Please start the API server.', 'error');

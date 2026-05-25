@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Login - Campus Lost & Found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-auth-page">
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-grid"></div>
+
+  <main class="auth-layout">
+    <section class="auth-brand-panel">
+      <div class="brand-badge"><i data-lucide="shield-check"></i></div>
+      <span class="brand-kicker">University Admin Portal</span>
+      <h1>Secure moderation for Lost & Found operations.</h1>
+      <p>Approve posts, review claims, and manage users with a premium dashboard designed for a modern campus workflow.</p>
+      <div class="brand-points">
+        <span>Role-based access</span>
+        <span>Live moderation</span>
+        <span>Secure JWT login</span>
+      </div>
+    </section>
+
+    <section class="auth-card glass-card">
+      <div class="auth-card-head">
+        <div>
+          <span class="section-label">Admin Access</span>
+          <h2>Sign in to dashboard</h2>
+        </div>
+        <div class="auth-card-icon"><i data-lucide="lock-keyhole"></i></div>
+      </div>
+
+      <form id="adminLoginForm" class="auth-form" autocomplete="off">
+        <div class="input-group">
+          <span class="input-icon"><i data-lucide="mail"></i></span>
+          <input type="email" id="adminEmail" name="email" placeholder="Admin email" required>
+        </div>
+
+        <div class="input-group">
+          <span class="input-icon"><i data-lucide="key-round"></i></span>
+          <input type="password" id="adminPassword" name="password" placeholder="Password" required autocomplete="current-password" spellcheck="false">
+        </div>
+
+        <div class="form-row">
+          <label class="check-row"><input type="checkbox" id="rememberAdmin"><span>Remember me</span></label>
+          <a href="index.html" class="text-link">Back to site</a>
+        </div>
+
+        <button type="submit" class="primary-btn" id="adminLoginBtn">
+          <span>Enter Dashboard</span>
+          <i data-lucide="arrow-right"></i>
+        </button>
+
+        <div id="adminLoginError" class="form-note" aria-live="polite"></div>
+      </form>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="js/api.js?v=20260525a"></script>
+  <script src="js/admin.js?v=20260525d"></script>
+</body>
+</html>
