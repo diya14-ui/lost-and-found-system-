@@ -291,25 +291,35 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const isFoundPage = document.querySelector('.found-items-page');
     const isLostPage = document.querySelector('.lost-items-page');
+    const isIndexPage = document.querySelector('.recent-items');
 
-    if (!isFoundPage && !isLostPage) {
+    if (!isFoundPage && !isLostPage && !isIndexPage) {
         return;
     }
 
     const itemType = isFoundPage ? 'found' : 'lost';
-    const itemsGrid = document.getElementById('itemsGrid');
-    const itemsCount = document.getElementById('itemsCount');
-    const loadInfo = document.getElementById('loadInfo');
+    const mineMode = new URLSearchParams(window.location.search).has('mine');
+    const pageSize = isIndexPage ? 3 : 12;
+    const paginationEnabled = Boolean(isIndexPage || isFoundPage || isLostPage);
+    const itemsGrid = isIndexPage ? document.getElementById('recentItemsGrid') : document.getElementById('itemsGrid');
+    const itemsCount = isIndexPage ? document.getElementById('recentItemsStatus') : document.getElementById('itemsCount');
+    const loadInfo = isIndexPage ? document.getElementById('recentItemsFallback') : document.getElementById('loadInfo');
     const searchInput = document.querySelector('.search-input-field');
     const searchBtn = document.querySelector('.search-btn');
-    const itemsSection = document.querySelector(itemType === 'found' ? '.found-items-grid' : '.lost-items-grid');
+    const itemsSection = isIndexPage ? document.querySelector('.recent-items') : document.querySelector(itemType === 'found' ? '.found-items-grid' : '.lost-items-grid');
     const locationFilter = document.getElementById('location-filter');
     const categoryFilter = document.getElementById('category-filter');
     const dateFilter = document.getElementById('date-filter');
     const clearFiltersBtn = document.querySelector('.clear-filters-btn');
-    const cacheKey = `cachedItems:${itemType}`;
+    const paginationPrev = isIndexPage ? document.getElementById('recentItemsPrev') : document.getElementById('itemsPrev');
+    const paginationNext = isIndexPage ? document.getElementById('recentItemsNext') : document.getElementById('itemsNext');
+    const pageInfo = isIndexPage ? document.getElementById('recentItemsPageInfo') : document.getElementById('itemsPageInfo');
+    const cacheKey = isIndexPage ? 'cachedItems:recent' : `cachedItems:${itemType}`;
 
     let allItems = [];
+    let currentPage = 1;
+    let lastPageLoaded = 1;
+    let currentServerQuery = '';
 
     function getCachedItems() {
         try {
@@ -414,6 +424,8 @@ document.addEventListener('DOMContentLoaded', function() {
             ? (normalizedStatus === 'resolved' ? 'Claimed' : (normalizedStatus === 'pending' ? 'Pending Claim' : 'Available'))
             : (normalizedStatus === 'pending' ? 'Important' : (normalizedStatus === 'resolved' ? 'Normal' : 'Urgent'));
 
+        const detailsUrl = mineMode ? `item-detail.html?id=${item.id}&mine=1` : `item-detail.html?id=${item.id}`;
+
         return `
             <div class="${itemType}-item-card">
                 <div class="item-image-container">
@@ -426,7 +438,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <p class="item-location"><i data-lucide="map-pin" class="icon"></i> ${escapeHtml(item.location_text || 'Location not provided')}</p>
                     <p class="item-date"><i data-lucide="clock" class="icon"></i> ${escapeHtml(getDateLabel(item.date_value))}</p>
                     <p class="item-description">${escapeHtml(item.description_text || 'No description provided.')}</p>
-                    <button class="view-details-btn" data-item-id="${item.id}">View Details</button>
+                    <a class="view-details-btn" href="${detailsUrl}" data-item-id="${item.id}">View Details</a>
                 </div>
             </div>
         `;
@@ -490,8 +502,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         itemsGrid.innerHTML = filtered.map(renderItemCard).join('');
-        itemsCount.textContent = `Showing ${filtered.length} of ${allItems.length} ${itemType} items`;
-        loadInfo.textContent = `Showing ${filtered.length} items`;
+        if (itemsCount) {
+            itemsCount.textContent = isIndexPage
+                ? `Showing ${filtered.length} recent items`
+                : `Showing ${filtered.length} of ${allItems.length} ${itemType} items`;
+        }
+        if (loadInfo) {
+            loadInfo.textContent = isIndexPage ? '' : `Showing ${filtered.length} items`;
+        }
         if (window.__lfRefreshIcons) window.__lfRefreshIcons();
     }
 
@@ -507,17 +525,44 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function loadItems() {
+        if (!itemsGrid) return;
+
         itemsGrid.innerHTML = '<p class="load-info">Loading items...</p>';
-        itemsCount.textContent = `Loading ${itemType} items...`;
+        if (itemsCount) {
+            itemsCount.textContent = isIndexPage ? 'Loading recent items...' : `Loading ${itemType} items...`;
+        }
 
         const params = new URLSearchParams({
-            type: itemType,
-            limit: '100',
-            offset: '0'
+            limit: String(pageSize),
+            offset: String((currentPage - 1) * pageSize)
         });
 
+        if (!isIndexPage) {
+            params.set('type', itemType);
+        }
+
+        if (mineMode) {
+            params.set('mine', '1');
+        }
+
+        const extraParams = new URLSearchParams();
+        if (searchInput && searchInput.value.trim()) extraParams.set('search', searchInput.value.trim());
+        if (locationFilter && locationFilter.value.trim()) extraParams.set('location', locationFilter.value.trim());
+        if (categoryFilter && categoryFilter.value.trim()) extraParams.set('category', categoryFilter.value.trim());
+        if (isIndexPage && itemType) extraParams.set('type', itemType);
+        extraParams.forEach((value, key) => params.set(key, value));
+
+        const headers = {};
+        if (mineMode) {
+            const authToken = localStorage.getItem('authToken');
+            if (authToken) {
+                headers.Authorization = `Bearer ${authToken}`;
+            }
+        }
+
         try {
-            const response = await apiRequest(`/items?${params.toString()}`);
+            currentServerQuery = `/items?${params.toString()}`;
+            const response = await apiRequest(currentServerQuery, { headers });
             let result = null;
 
             try {
@@ -533,23 +578,50 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(result.message || `Failed to fetch items (${response.status}).`);
             }
 
-            allItems = Array.isArray(result.data) ? result.data : [];
+            allItems = Array.isArray(result.data?.items) ? result.data.items : (Array.isArray(result.data) ? result.data : []);
+            lastPageLoaded = currentPage;
             setCachedItems(allItems);
             applyClientFilters();
+            updatePaginationControls(allItems.length);
         } catch (error) {
             const cachedItems = getCachedItems();
             if (cachedItems.length > 0) {
                 allItems = cachedItems;
                 applyClientFilters();
-                itemsCount.textContent = `Showing cached ${itemType} items (backend offline)`;
+                if (itemsCount) itemsCount.textContent = isIndexPage ? 'Showing cached recent items (backend offline)' : `Showing cached ${itemType} items (backend offline)`;
+                updatePaginationControls(cachedItems.length);
                 return;
             }
 
             const errorMessage = (error && error.message) ? error.message : 'Could not load items.';
+            if (mineMode && errorMessage.toLowerCase().includes('authorization token required')) {
+                itemsGrid.innerHTML = '<p class="load-info">Please login to view your items.</p>';
+                itemsCount.textContent = `Showing 0 ${itemType} items`;
+                loadInfo.textContent = 'Login required';
+                return;
+            }
             itemsGrid.innerHTML = `<p class="load-info">Could not load items: ${escapeHtml(errorMessage)}. Start backend at backend/app.py.</p>`;
-            itemsCount.textContent = `Showing 0 ${itemType} items`;
-            loadInfo.textContent = 'Showing 0 items';
+            if (itemsCount) itemsCount.textContent = `Showing 0 ${itemType} items`;
+            if (loadInfo) loadInfo.textContent = 'Showing 0 items';
+            updatePaginationControls(0);
         }
+    }
+
+    function updatePaginationControls(countOnPage) {
+        if (!paginationEnabled) return;
+
+        const hasNext = countOnPage >= pageSize;
+        if (paginationPrev) paginationPrev.disabled = currentPage <= 1;
+        if (paginationNext) paginationNext.disabled = !hasNext;
+        if (pageInfo) pageInfo.textContent = `Page ${currentPage}`;
+    }
+
+    async function goToPage(delta) {
+        const nextPage = Math.max(1, currentPage + delta);
+        if (nextPage === currentPage) return;
+        currentPage = nextPage;
+        await loadItems();
+        scrollToResults();
     }
 
     if (searchBtn) {
@@ -582,7 +654,21 @@ document.addEventListener('DOMContentLoaded', function() {
             if (locationFilter) locationFilter.value = '';
             if (categoryFilter) categoryFilter.value = '';
             if (dateFilter) dateFilter.value = '';
+            currentPage = 1;
             applyClientFilters();
+            loadItems();
+        });
+    }
+
+    if (paginationPrev) {
+        paginationPrev.addEventListener('click', function() {
+            goToPage(-1);
+        });
+    }
+
+    if (paginationNext) {
+        paginationNext.addEventListener('click', function() {
+            goToPage(1);
         });
     }
 
@@ -593,9 +679,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const itemId = detailsButton.getAttribute('data-item-id');
-            if (itemId) {
-                window.location.href = `item-detail.html?id=${itemId}`;
+            event.preventDefault();
+            const targetUrl = detailsButton.getAttribute('href');
+            if (targetUrl) {
+                window.location.href = targetUrl;
             }
         });
     }

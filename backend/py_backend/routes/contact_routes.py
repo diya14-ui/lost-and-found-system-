@@ -48,8 +48,11 @@ def _append_local_fallback(payload: dict):
         return None, 0
 
 
-@contact_bp.post("")
+@contact_bp.route("", methods=["POST", "OPTIONS"], strict_slashes=False)
 def create_contact():
+    if request.method == "OPTIONS":
+        return ("", 204)
+
     payload = request.get_json(silent=True) or {}
     name = (payload.get("name") or "").strip() or None
     email = (payload.get("email") or "").strip() or None

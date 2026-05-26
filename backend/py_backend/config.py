@@ -1,7 +1,8 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+_backend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+load_dotenv(os.path.join(_backend_dir, ".env"))
 
 class Config:
     PORT = int(os.getenv("PORT", "5000"))
@@ -10,7 +11,15 @@ class Config:
     DB_USER = os.getenv("DB_USER", "root")
     DB_PASSWORD = os.getenv("DB_PASSWORD", "")
     DB_NAME = os.getenv("DB_NAME", "maindatabase")
-    JWT_SECRET = os.getenv("JWT_SECRET", "dev_secret_change_me")
+    # If JWT_SECRET is not provided, generate an ephemeral secret and warn.
+    JWT_SECRET = os.getenv("JWT_SECRET")
+    if not JWT_SECRET:
+        try:
+            import secrets as _secrets
+            JWT_SECRET = _secrets.token_urlsafe(32)
+        except Exception:
+            JWT_SECRET = ""
+        print("Warning: JWT_SECRET is not set. Using an ephemeral secret — tokens will be invalid after restart. Set JWT_SECRET in your .env for persistent tokens.")
     JWT_EXPIRES_IN_DAYS = int(os.getenv("JWT_EXPIRES_DAYS", "7"))
     CORS_ORIGIN = os.getenv("CORS_ORIGIN", "*")
     # SMTP / email settings (optional)

@@ -1,8 +1,12 @@
 window.API_CONFIG = {
-  BASE_URL: "http://localhost:5000/api"
+  BASE_URL: `${window.location.origin}/api`
 };
 
 function getApiBaseUrl() {
+  if (window.location && window.location.origin && window.location.origin !== 'null') {
+    return `${window.location.origin}/api`;
+  }
+
   return window.API_CONFIG.BASE_URL;
 }
 

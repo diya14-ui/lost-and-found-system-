@@ -8,7 +8,9 @@ import uuid
 import hashlib
 import secrets
 from datetime import datetime, timedelta
-from py_backend.utils.email import send_email
+# SMTP/email removed — password reset returns reset URL in response
+from py_backend.utils.rate_limit import rate_limit
+from py_backend.config import Config
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -39,33 +41,34 @@ def _save_profile_image(image_file):
     return f"/uploads/profiles/{unique_name}"
 
 
-def _ensure_password_reset_table(cursor):
-    cursor.execute(
-        """
-        CREATE TABLE IF NOT EXISTS password_reset_tokens (
-            id INT PRIMARY KEY AUTO_INCREMENT,
-            user_id INT NOT NULL,
-            token_hash CHAR(64) NOT NULL UNIQUE,
-            expires_at DATETIME NOT NULL,
-            used_at DATETIME DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            CONSTRAINT fk_password_reset_user
-                FOREIGN KEY (user_id) REFERENCES users(id)
-                ON DELETE CASCADE
-        )
-        """
-    )
-
-
 def _hash_reset_token(token: str) -> str:
     return hashlib.sha256(token.encode("utf-8")).hexdigest()
 
 
 def _build_reset_url(token: str) -> str:
-    return f"forgot-password.html?token={token}"
+    # Prefer configured frontend origin (CORS_ORIGIN) when available and not wildcard
+    origin = None
+    try:
+        origin = getattr(Config, 'CORS_ORIGIN', None)
+        if origin == '*' or not origin:
+            origin = None
+    except Exception:
+        origin = None
+
+    if not origin:
+        # fall back to request host URL (includes scheme and host)
+        try:
+            origin = request.url_root.rstrip('/')
+        except Exception:
+            origin = ''
+
+    # Ensure leading slash is present for path
+    path = f"/forgot-password.html?token={token}"
+    return f"{origin}{path}"
 
 
 @auth_bp.post("/signup")
+@rate_limit(max_calls=5, per_seconds=60, by='ip')
 def signup():
     payload = request.get_json(silent=True) if request.is_json else {}
     form = request.form
@@ -141,6 +144,7 @@ def signup():
 
 
 @auth_bp.post("/login")
+@rate_limit(max_calls=6, per_seconds=60, by='ip')
 def login():
     payload = request.get_json(silent=True) or {}
     email = payload.get("email", "").strip()
@@ -189,6 +193,7 @@ def login():
 
 
 @auth_bp.post("/password-reset/request")
+@rate_limit(max_calls=3, per_seconds=300, by='email_or_ip')
 def request_password_reset():
     payload = request.get_json(silent=True) or {}
     email = (payload.get("email") or "").strip()
@@ -199,7 +204,6 @@ def request_password_reset():
     try:
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
-        _ensure_password_reset_table(cursor)
 
         cursor.execute("SELECT id, name FROM users WHERE email = %s LIMIT 1", (email,))
         user = cursor.fetchone()
@@ -230,24 +234,8 @@ def request_password_reset():
     except mysql.connector.Error:
         return jsonify({"success": False, "message": "Database is not available right now. Please try again."}), 503
 
-    # Try sending email if SMTP is configured; otherwise return the reset URL in the response
+    # Return reset URL in response (no SMTP configured in this project)
     reset_url = _build_reset_url(raw_token)
-    email_subject = "Campus Lost & Found — Password reset"
-    reset_link_absolute = reset_url
-    try:
-        # If Config.SMTP_HOST is set, send email (send_email returns False if not configured)
-        sent = send_email(
-            to_address=email,
-            subject=email_subject,
-            html_body=f"<p>Hello {user['name']},</p><p>Click the link below to reset your password (expires in 30 minutes):</p><p><a href=\"{reset_link_absolute}\">Reset password</a></p>",
-            text_body=f"Hello {user['name']},\n\nOpen this link to reset your password: {reset_link_absolute}\n\nThis link expires in 30 minutes."
-        )
-    except Exception:
-        sent = False
-
-    if sent:
-        return jsonify({"success": True, "message": "If that email exists, a reset link has been sent."})
-
     return jsonify(
         {
             "success": True,
@@ -272,7 +260,6 @@ def complete_password_reset():
     try:
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
-        _ensure_password_reset_table(cursor)
 
         token_hash = _hash_reset_token(token)
         cursor.execute(

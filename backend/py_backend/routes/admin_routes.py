@@ -2,8 +2,9 @@ from flask import Blueprint, request, jsonify, g
 import mysql.connector
 from py_backend.db import get_connection
 from py_backend.utils.security import verify_password, generate_token
-from py_backend.utils.email import send_email
+# SMTP/email removed per project preference; use DB notifications instead
 from py_backend.middleware.auth import require_auth
+import json
 from functools import wraps
 from datetime import date, datetime, time, timedelta
 
@@ -18,6 +19,46 @@ def _get_reporter_email_for_item(item_id):
     cursor.close()
     conn.close()
     return row
+
+
+def _ensure_notifications_table_and_insert(user_id, title, body, metadata=None):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS notifications (
+                id INT PRIMARY KEY AUTO_INCREMENT,
+                user_id INT NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                body TEXT NOT NULL,
+                metadata TEXT,
+                is_read TINYINT(1) DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT fk_notifications_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+            ) ENGINE=InnoDB
+            """
+        )
+        if metadata is None:
+            metadata = None
+        else:
+            try:
+                metadata = json.dumps(metadata)
+            except Exception:
+                metadata = str(metadata)
+        cursor.execute("INSERT INTO notifications (user_id, title, body, metadata) VALUES (%s, %s, %s, %s)", (user_id, title, body, metadata))
+        conn.commit()
+        cursor.close()
+        conn.close()
+    except Exception:
+        try:
+            cursor.close()
+        except Exception:
+            pass
+        try:
+            conn.close()
+        except Exception:
+            pass
 
 
 def _json_safe_value(value):
@@ -346,12 +387,19 @@ def reject_item(item_id):
     # Optionally notify reporter (best-effort)
     try:
         if reporter and reporter.get('reporter_email'):
-            send_email(
-                to_address=reporter['reporter_email'],
-                subject='Your item post was removed',
-                html_body=f"<p>Hello {reporter.get('reporter_name')},</p><p>Your post was removed by moderators. Reason: {reason or 'Violation of rules'}.</p>",
-                text_body=f"Your post was removed by moderators. Reason: {reason or 'Violation of rules'}."
-            )
+            # try to find user by reporter email and insert an in-app notification
+            try:
+                conn2 = get_connection()
+                cursor2 = conn2.cursor()
+                cursor2.execute("SELECT id FROM users WHERE email = %s LIMIT 1", (reporter.get('reporter_email'),))
+                uid_row = cursor2.fetchone()
+                if uid_row and uid_row[0]:
+                    metadata = {"item_id": int(item_id), "reason": reason}
+                    _ensure_notifications_table_and_insert(uid_row[0], 'Your item post was removed', f'Your post was removed by moderators. Reason: {reason or "Violation of rules"}.', metadata)
+                cursor2.close()
+                conn2.close()
+            except Exception:
+                pass
     except Exception:
         pass
 
@@ -479,7 +527,11 @@ def approve_claim(claim_id):
             cursor.close()
             conn.close()
             if u and u.get('email'):
-                send_email(u['email'], 'Claim approved', f'<p>Hello {u.get("name")},</p><p>Your claim has been approved.</p>', f'Your claim has been approved.')
+                try:
+                    # insert notification for claimant
+                    _ensure_notifications_table_and_insert(claimant[0], 'Claim approved', 'Your claim has been approved.', {"claim_id": claim_id})
+                except Exception:
+                    pass
     except Exception:
         pass
 
@@ -512,7 +564,10 @@ def reject_claim(claim_id):
             cursor.close()
             conn.close()
             if u and u.get('email'):
-                send_email(u['email'], 'Claim rejected', f'<p>Hello {u.get("name")},</p><p>Your claim was rejected. Reason: {reason or "Not approved"}.</p>', f'Your claim was rejected.')
+                try:
+                    _ensure_notifications_table_and_insert(claimant[0], 'Claim rejected', f'Your claim was rejected. Reason: {reason or "Not approved"}.', {"claim_id": claim_id, "reason": reason})
+                except Exception:
+                    pass
     except Exception:
         pass
 
