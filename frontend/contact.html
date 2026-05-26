@@ -78,6 +78,7 @@
     </main>
 
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="js/api.js"></script>
     <script src="js/ui.js"></script>
     <script>
         (function() {
@@ -137,11 +138,8 @@
                 form.reset();
                 loadMessages();
 
-                // Attempt to POST to backend (use page origin when available, otherwise try localhost:5000)
-                const originCandidate = (window.location && window.location.protocol && window.location.protocol.startsWith('http')) ? window.location.origin : 'http://127.0.0.1:5000';
-                const url = `${originCandidate}/api/contact`;
                 try {
-                    const resp = await fetch(url, {
+                    const resp = await apiRequest('/contact', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ name, email, subject, message }),
