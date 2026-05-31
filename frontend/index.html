@@ -280,6 +280,9 @@
             const recentItemsGrid = document.getElementById('recentItemsGrid');
             const recentItemsStatus = document.getElementById('recentItemsStatus');
             const recentItemsFallback = document.getElementById('recentItemsFallback');
+            const paginationPrev = document.getElementById('recentItemsPrev');
+            const paginationNext = document.getElementById('recentItemsNext');
+            const paginationPageInfo = document.getElementById('recentItemsPageInfo');
 
             function getApiOrigin() {
                 try {
@@ -378,59 +381,92 @@
             }
 
             function loadRecentItems() {
-                if (!recentItemsGrid || !recentItemsStatus) {
+                if (!recentItemsGrid || !recentItemsStatus || !paginationPrev || !paginationNext || !paginationPageInfo) {
                     return;
                 }
 
-                // show skeleton while loading
-                recentItemsGrid.innerHTML = makeSkeletonHtml(3);
-                recentItemsFallback.style.display = 'none';
+                const pageSize = 3;
+                let currentPage = 1;
 
-                (async () => {
+                function renderPageButtons(hasNext) {
+                    // show current page and next page button if available
+                    paginationPageInfo.innerHTML = '';
+                    const btnCurrent = document.createElement('button');
+                    btnCurrent.className = 'pagination-page-btn active';
+                    btnCurrent.textContent = String(currentPage);
+                    btnCurrent.dataset.page = String(currentPage);
+                    paginationPageInfo.appendChild(btnCurrent);
+
+                    if (hasNext) {
+                        const btnNextPage = document.createElement('button');
+                        btnNextPage.className = 'pagination-page-btn';
+                        btnNextPage.textContent = String(currentPage + 1);
+                        btnNextPage.dataset.page = String(currentPage + 1);
+                        paginationPageInfo.appendChild(btnNextPage);
+                    }
+                }
+
+                async function loadPage(page) {
+                    currentPage = Math.max(1, page || 1);
+                    recentItemsGrid.innerHTML = makeSkeletonHtml(pageSize);
+                    recentItemsFallback.style.display = 'none';
+
+                    const offset = (currentPage - 1) * pageSize;
                     try {
-                        const response = await apiRequest('/items?limit=3');
+                        const response = await apiRequest(`/items?limit=${pageSize}&offset=${offset}`);
                         const result = await response.json();
-
-                        if (!response.ok || !result.success) {
-                            throw new Error(result.message || 'Unable to load recent items.');
-                        }
+                        if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load items');
 
                         const items = Array.isArray(result.data) ? result.data : [];
-
                         if (!items.length) {
-                            recentItemsStatus.textContent = 'No items have been reported yet.';
-                            recentItemsGrid.innerHTML = '';
-                            // store empty cache
-                            localStorage.setItem('recentItemsCache', JSON.stringify({ts: Date.now(), items: []}));
-                            return;
+                            // no items on this page
+                            if (currentPage === 1) {
+                                recentItemsStatus.textContent = 'No items have been reported yet.';
+                                recentItemsGrid.innerHTML = '';
+                                localStorage.setItem('recentItemsCache', JSON.stringify({ts: Date.now(), items: []}));
+                                renderPageButtons(false);
+                                paginationPrev.disabled = currentPage === 1;
+                                paginationNext.disabled = true;
+                                return;
+                            }
+                            // otherwise step back one page
+                            currentPage = Math.max(1, currentPage - 1);
+                            return loadPage(currentPage);
                         }
 
-                        // Only render and show up to 3 recent items on the homepage
-                        const shown = items.slice(0, 3);
-                        recentItemsGrid.innerHTML = shown.map(renderItemCard).join('');
-                        recentItemsStatus.textContent = `Showing ${shown.length} recent item${shown.length === 1 ? '' : 's'}`;
+                        recentItemsGrid.innerHTML = items.map(renderItemCard).join('');
+                        recentItemsStatus.textContent = `Showing ${items.length} recent item${items.length === 1 ? '' : 's'}`;
                         if (window.__lfRefreshIcons) window.__lfRefreshIcons();
                         localStorage.setItem('recentItemsCache', JSON.stringify({ts: Date.now(), items}));
+
+                        // Controls
+                        const hasNext = items.length === pageSize; // if full page, there might be a next page
+                        renderPageButtons(hasNext);
+                        paginationPrev.disabled = currentPage === 1;
+                        paginationNext.disabled = !hasNext;
                     } catch (error) {
-                        // try cache first
+                        // fallback to cache if available
                         try {
                             const raw = localStorage.getItem('recentItemsCache');
                             if (raw) {
                                 const parsed = JSON.parse(raw);
                                 const cached = Array.isArray(parsed.items) ? parsed.items : [];
                                 if (cached.length) {
-                                    const shownCached = cached.slice(0, 3);
-                                    recentItemsGrid.innerHTML = shownCached.map(renderItemCard).join('');
-                                    recentItemsStatus.textContent = `Showing cached items (backend offline)`;
-                                    if (window.__lfRefreshIcons) window.__lfRefreshIcons();
-                                    return;
+                                    const start = (currentPage - 1) * pageSize;
+                                    const shownCached = cached.slice(start, start + pageSize);
+                                    if (shownCached.length) {
+                                        recentItemsGrid.innerHTML = shownCached.map(renderItemCard).join('');
+                                        recentItemsStatus.textContent = `Showing cached items (offline)`;
+                                        if (window.__lfRefreshIcons) window.__lfRefreshIcons();
+                                        renderPageButtons(shownCached.length === pageSize);
+                                        paginationPrev.disabled = currentPage === 1;
+                                        paginationNext.disabled = shownCached.length !== pageSize;
+                                        return;
+                                    }
                                 }
                             }
-                        } catch (err) {
-                            // ignore cache parsing errors
-                        }
+                        } catch (err) {}
 
-                        // final fallback when no cache
                         recentItemsStatus.textContent = 'Live data unavailable';
                         recentItemsGrid.innerHTML = `
                             <div class="item-card">
@@ -447,7 +483,26 @@
                         recentItemsFallback.textContent = 'Open the API server to replace this fallback with live database items.';
                         if (window.__lfRefreshIcons) window.__lfRefreshIcons();
                     }
-                })();
+                }
+
+                // wire controls
+                paginationPrev.addEventListener('click', () => {
+                    if (currentPage > 1) loadPage(currentPage - 1);
+                });
+
+                paginationNext.addEventListener('click', () => {
+                    loadPage(currentPage + 1);
+                });
+
+                paginationPageInfo.addEventListener('click', (ev) => {
+                    const btn = ev.target.closest('.pagination-page-btn');
+                    if (btn && btn.dataset.page) {
+                        loadPage(Number(btn.dataset.page));
+                    }
+                });
+
+                // initial load
+                loadPage(1);
             }
 
             // Delegated image error handler: replace failed images with category icon placeholder

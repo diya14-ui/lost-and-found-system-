@@ -1,12 +1,21 @@
+// Primary backend API base (development). Change if your backend runs elsewhere.
+const BACKEND_API_BASE = 'http://127.0.0.1:5000/api';
+
 window.API_CONFIG = {
-  BASE_URL: `${window.location.origin}/api`
+  BASE_URL: BACKEND_API_BASE
 };
 
 function getApiBaseUrl() {
-  if (window.location && window.location.origin && window.location.origin !== 'null') {
-    return `${window.location.origin}/api`;
+  // If the page is served from the backend origin, use same-origin API.
+  try {
+    if (window.location && window.location.origin && window.location.origin.indexOf(':5000') !== -1) {
+      return `${window.location.origin}/api`;
+    }
+  } catch (e) {
+    // ignore
   }
 
+  // Otherwise prefer the configured backend base so Live Server pages call the real API.
   return window.API_CONFIG.BASE_URL;
 }
 

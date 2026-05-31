@@ -1326,16 +1326,19 @@ body {
 }
 
 .view-details-btn {
+    display: inline-block;
     width: 100%;
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
     border: none;
-    padding: 0.8rem;
+    padding: 0.8rem 1rem;
     border-radius: 25px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 1rem;
+    margin-top: 1.25rem;
+    text-decoration: none;
+    text-align: center;
 }
 
 .view-details-btn:hover {
@@ -1346,6 +1349,82 @@ body {
 .load-more-section {
     text-align: center;
     margin-top: 3rem;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.pagination-btn {
+    background: linear-gradient(135deg, #3b5bdb, #4c6ef5);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.58rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 20px rgba(30, 64, 175, 0.28);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.78;
+    cursor: default;
+    box-shadow: none;
+    background: linear-gradient(135deg, #5b6b9b, #6a78a8);
+    color: #f8fbff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.pagination-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #2f4fcf, #3f63eb);
+}
+
+.pagination-info {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.pagination-page-btn {
+    background: rgba(255, 255, 255, 0.32);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.7);
+    padding: 0.35rem 0.7rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.pagination-page-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.26);
+    color: #ffffff;
+}
+
+.pagination-page-btn.active {
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    color: #ffffff;
+    border-color: #1e40af;
+    box-shadow: 0 8px 18px rgba(30, 64, 175, 0.35);
+}
+
+/* Ensure pagination buttons remain visible when combined with .load-more-btn on list pages. */
+.load-more-btn.pagination-btn {
+    background: linear-gradient(135deg, #3b5bdb, #4c6ef5);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.58rem 1rem;
+    border-radius: 10px;
+}
+
+.load-more-btn.pagination-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2f4fcf, #3f63eb);
+    color: #ffffff;
 }
 
 .load-more-btn {

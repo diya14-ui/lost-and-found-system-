@@ -21,14 +21,9 @@ def create_app() -> Flask:
     uploads_dir = os.path.join(os.path.dirname(__file__), "uploads")
     os.makedirs(uploads_dir, exist_ok=True)
 
-    cors_origin = (Config.CORS_ORIGIN or "*").strip()
-
-    if cors_origin == "*":
-        CORS(app, resources={r"/api/.*": {"origins": "*"}})
-    else:
-        # Supports a single origin or comma-separated origins in .env
-        origins = [origin.strip() for origin in cors_origin.split(",") if origin.strip()]
-        CORS(app, resources={r"/api/.*": {"origins": origins}})
+    # Enable CORS for API routes. Use a permissive policy in development
+    # so pages served by Live Server (different origin) can access the API.
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     @app.get("/api/health")
     def health():
